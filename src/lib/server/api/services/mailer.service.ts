@@ -53,7 +53,7 @@ export class MailerService {
 		const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
 		const __dirname = path.dirname(__filename); // get the name of the directory
 		return fs.readFileSync(
-			path.join(__dirname, `../email-templates/${template}.handlebars`),
+			path.join(__dirname, `../infrastructure/email-templates/${template}.handlebars`),
 			'utf-8'
 		);
 	}
