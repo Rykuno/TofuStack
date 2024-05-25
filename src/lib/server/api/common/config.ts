@@ -1,0 +1,15 @@
+import {
+	DATABASE_URL,
+	DISCORD_CLIENT_ID,
+	DISCORD_CLIENT_SECRET,
+	ORIGIN,
+	RESEND_API_KEY
+} from '$env/static/private';
+
+export const config = {
+	DATABASE_URL,
+	ORIGIN,
+	RESEND_API_KEY,
+	DISCORD_CLIENT_ID,
+	DISCORD_CLIENT_SECRET
+};

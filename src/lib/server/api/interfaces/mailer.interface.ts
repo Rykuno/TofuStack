@@ -1,0 +1,3 @@
+interface INotifier {
+	sendEmail(): any;
+}
