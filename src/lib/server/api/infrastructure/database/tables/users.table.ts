@@ -1,4 +1,4 @@
-import cuid2, { createId } from '@paralleldrive/cuid2';
+import { createId } from '@paralleldrive/cuid2';
 import { boolean, pgTable, text } from 'drizzle-orm/pg-core';
 import { citext, timestamps } from '../utils';
 import { relations } from 'drizzle-orm';
