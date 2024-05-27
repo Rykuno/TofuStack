@@ -5,6 +5,24 @@ import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 
+/* -------------------------------------------------------------------------- */
+/*                                   Service                                  */
+/* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
+/* ---------------------------------- About --------------------------------- */
+/*
+Services are responsible for handling business logic and data manipulation. 
+They genreally call on repositories or other services to complete a use-case.
+*/
+/* ---------------------------------- Notes --------------------------------- */
+/*
+Services should be kept as clean and simple as possible. 
+
+Create private functions to handle complex logic and keep the public methods as 
+simple as possible. This makes the service easier to read, test and understand.
+*/
+/* -------------------------------------------------------------------------- */
+
 type SendMail = {
 	to: string | string[];
 	subject: string;
@@ -34,6 +52,15 @@ export class MailerService {
 			to: data.to,
 			subject: 'Email Verification',
 			html: template({ token: data.props.token })
+		});
+	}
+
+	sendWelcomeEmail(data: SendTemplate<null>) {
+		const template = handlebars.compile(this.getTemplate('welcome'));
+		return this.send({
+			to: data.to,
+			subject: 'Welcome!',
+			html: template(null)
 		});
 	}
 

@@ -7,7 +7,24 @@ import type { SignInEmailDto } from '../dtos/signin-email.dto';
 import { BadRequest } from '../common/errors';
 import { LuciaProvider } from '../providers/lucia.provider';
 import type { UpdateEmailDto } from '../dtos/update-email.dto';
-import type { VerifyEmailDto } from '../dtos/verify-email.dto';
+
+/* -------------------------------------------------------------------------- */
+/*                                   Service                                  */
+/* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
+/* ---------------------------------- About --------------------------------- */
+/*
+Services are responsible for handling business logic and data manipulation. 
+They genreally call on repositories or other services to complete a use-case.
+*/
+/* ---------------------------------- Notes --------------------------------- */
+/*
+Services should be kept as clean and simple as possible. 
+
+Create private functions to handle complex logic and keep the public methods as 
+simple as possible. This makes the service easier to read, test and understand.
+*/
+/* -------------------------------------------------------------------------- */
 
 @injectable()
 export class IamService {
@@ -45,10 +62,9 @@ export class IamService {
 		// if this is a new unverified user, send a welcome email and update the user
 		if (!user.verified) {
 			await this.usersRepository.update(user.id, { verified: true });
-			await this.mailerService.send({
+			this.mailerService.sendWelcomeEmail({
 				to: user.email,
-				subject: 'Welcome!',
-				html: 'Welcome to example.com'
+				props: null
 			});
 		}
 
@@ -81,14 +97,9 @@ export class IamService {
 
 	private async createValidationReuqest(userId: string, email: string) {
 		const validationToken = await this.tokensService.create(userId, email);
-		await this.mailerService.sendEmailVerification({
+		this.mailerService.sendEmailVerification({
 			to: email,
 			props: { token: validationToken.token }
 		});
-		// return await this.mailerService.send({
-		// 	to: email,
-		// 	subject: 'Verify your email',
-		// 	html: `Your token is ${validationToken.token}`
-		// });
 	}
 }

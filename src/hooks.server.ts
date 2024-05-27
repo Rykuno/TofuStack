@@ -1,10 +1,11 @@
-import { hc, type ClientResponse } from 'hono/client';
+import { hc } from 'hono/client';
 import { redirect, type Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 import type { ApiRoutes } from '$lib/server/api';
 import { parseApiResponse } from '$lib/helpers';
 
 const apiClient: Handle = async ({ event, resolve }) => {
+	/* ------------------------------ Register api ------------------------------ */
 	const { api } = hc<ApiRoutes>('/', {
 		fetch: event.fetch,
 		headers: {
@@ -12,6 +13,7 @@ const apiClient: Handle = async ({ event, resolve }) => {
 		}
 	});
 
+	/* ----------------------------- Auth functions ----------------------------- */
 	async function getAuthedUser() {
 		const { data } = await parseApiResponse(api.iam.user.$get());
 		return data && data.user;
@@ -23,11 +25,12 @@ const apiClient: Handle = async ({ event, resolve }) => {
 		return data?.user;
 	}
 
-	// set contexts
+	/* ------------------------------ Set contexts ------------------------------ */
 	event.locals.api = api;
 	event.locals.getAuthedUser = getAuthedUser;
 	event.locals.getAuthedUserOrThrow = getAuthedUserOrThrow;
 
+	/* ----------------------------- Return response ---------------------------- */
 	const response = await resolve(event);
 	return response;
 };

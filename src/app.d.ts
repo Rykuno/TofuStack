@@ -8,8 +8,8 @@ declare global {
 		// interface Error {}
 		interface Locals {
 			api: ApiClient['api'];
-			getAuthedUser: () => Promise<User | null>;
-			getAuthedUserOrThrow: () => Promise<User>;
+			getAuthedUser: () => Promise<Returned<User> | null>;
+			getAuthedUserOrThrow: () => Promise<Returned<User>>;
 		}
 		// interface PageData {}
 		// interface PageState {}
