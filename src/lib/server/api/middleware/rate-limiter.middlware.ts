@@ -5,18 +5,16 @@ import type { HonoTypes } from "../types";
 
 const client = new RedisClient()
 
-type LimiterProps = {
+export function limiter({ limit, minutes, key = "" }: {
   limit: number;
   minutes: number;
   key?: string;
-}
-
-export function limiter({limit, minutes, key = ""}: LimiterProps) {
+}) {
   return rateLimiter({
     windowMs: minutes * 60 * 1000, // every x minutes
     limit, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
     standardHeaders: "draft-6", // draft-6: `RateLimit-*` headers; draft-7: combined `RateLimit` header
-    keyGenerator: (c) =>  {
+    keyGenerator: (c) => {
       const vars = c.var as HonoTypes['Variables'];
       const clientKey = vars.user?.id || c.req.header("x-forwarded-for");
       const pathKey = key || c.req.routePath;

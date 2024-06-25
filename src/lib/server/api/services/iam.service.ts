@@ -33,7 +33,7 @@ export class IamService {
 		@inject(TokensService) private tokensService: TokensService,
 		@inject(MailerService) private mailerService: MailerService,
 		@inject(LuciaProvider) private lucia: LuciaProvider
-	) {}
+	) { }
 
 	async registerEmail(data: RegisterEmailDto) {
 		const existingUser = await this.usersRepository.findOneByEmail(data.email);
@@ -48,16 +48,10 @@ export class IamService {
 
 	async signinEmail(data: SignInEmailDto) {
 		const user = await this.usersRepository.findOneByEmail(data.email);
-
-		if (!user) {
-			throw BadRequest('Bad credentials');
-		}
+		if (!user) throw BadRequest('Bad credentials');
 
 		const isValidToken = await this.tokensService.validateToken(user.id, data.token);
-
-		if (!isValidToken) {
-			throw BadRequest('Bad credentials');
-		}
+		if (!isValidToken) throw BadRequest('Bad credentials');
 
 		// if this is a new unverified user, send a welcome email and update the user
 		if (!user.verified) {
@@ -73,17 +67,11 @@ export class IamService {
 
 	async verifyEmail(userId: string, token: string) {
 		const user = await this.usersRepository.findOneById(userId);
-
-		if (!user) {
-			throw BadRequest('User not found');
-		}
+		if (!user) throw BadRequest('User not found');
 
 		const validToken = await this.tokensService.validateToken(user.id, token);
-
-		if (!validToken) {
-			throw BadRequest('Invalid token');
-		}
-
+		if (!validToken) throw BadRequest('Invalid token');
+		
 		await this.usersRepository.update(user.id, { email: validToken.email });
 	}
 

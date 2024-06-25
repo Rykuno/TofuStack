@@ -3,8 +3,8 @@ import { verifyEmailDto } from "$lib/dtos/verify-email.dto.js";
 import { fail, setError, superValidate } from "sveltekit-superforms";
 import { zod } from "sveltekit-superforms/adapters";
 
-export let load = async ({ locals }) => {
-	const authedUser = await locals.getAuthedUserOrThrow();
+export let load = async (event) => {
+	const authedUser = await event.locals.getAuthedUserOrThrow()
 
 	return {
 		authedUser,

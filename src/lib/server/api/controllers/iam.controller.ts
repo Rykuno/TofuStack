@@ -5,13 +5,13 @@ import { IamService } from '../services/iam.service';
 import { signInEmailDto } from '../../../dtos/signin-email.dto';
 import { setCookie } from 'hono/cookie';
 import { LuciaProvider } from '../providers/lucia.provider';
-import { requireAuth } from '../middleware/require-auth.middleware';
 import { updateEmailDto } from '../../../dtos/update-email.dto';
 import { verifyEmailDto } from '../../../dtos/verify-email.dto';
 import { Hono } from 'hono';
 import type { HonoTypes } from '../types';
 import type { Controller } from '../interfaces/controller.interface';
 import { limiter } from '../middleware/rate-limiter.middlware';
+import { requireAuth } from '../middleware/auth.middleware';
 
 /* -------------------------------------------------------------------------- */
 /*                                 Controller                                 */

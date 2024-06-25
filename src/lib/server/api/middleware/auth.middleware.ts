@@ -3,6 +3,8 @@ import { createMiddleware } from 'hono/factory';
 import type { HonoTypes } from '../types';
 import { lucia } from '../infrastructure/auth/lucia';
 import { verifyRequestOrigin } from 'lucia';
+import type { Session, User } from 'lucia';
+import { Unauthorized } from '../common/errors';
 
 export const verifyOrigin: MiddlewareHandler<HonoTypes> = createMiddleware(async (c, next) => {
 	if (c.req.method === "GET") {
@@ -35,3 +37,14 @@ export const validateAuthSession: MiddlewareHandler<HonoTypes> = createMiddlewar
 	c.set("user", user);
 	return next();
 })
+
+export const requireAuth: MiddlewareHandler<{
+	Variables: {
+		session: Session;
+		user: User;
+	};
+}> = createMiddleware(async (c, next) => {
+	const user = c.var.user;
+	if (!user) throw Unauthorized('You must be logged in to access this resource');
+	return next();
+});

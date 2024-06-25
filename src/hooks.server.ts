@@ -15,7 +15,6 @@ const apiClient: Handle = async ({ event, resolve }) => {
 		}
 	});
 
-
 	/* ----------------------------- Auth functions ----------------------------- */
 	async function getAuthedUser() {
 		const { data } = await api.iam.user.$get().then(parseApiResponse)

@@ -3,16 +3,14 @@
 	import Menu from 'lucide-svelte/icons/menu';
 	import Package2 from 'lucide-svelte/icons/package-2';
 	import Search from 'lucide-svelte/icons/search';
-
 	import { Button } from '$lib/components/ui/button/index.js';
-	import * as Card from '$lib/components/ui/card/index.js';
-	import { Checkbox } from '$lib/components/ui/checkbox/index.js';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
 	import * as Sheet from '$lib/components/ui/sheet/index.js';
 	import { cn } from '$lib/utils/ui';
 	import HouseIcon from 'lucide-svelte/icons/house';
 	import { page } from '$app/stores';
+	import { enhance } from '$app/forms';
 
 	let { children } = $props();
 
@@ -98,7 +96,11 @@
 				<DropdownMenu.Content align="end">
 					<DropdownMenu.Item href="/settings">Settings</DropdownMenu.Item>
 					<DropdownMenu.Separator />
-					<DropdownMenu.Item>Logout</DropdownMenu.Item>
+					<DropdownMenu.Item>
+						<form action="/?/logout" method="POST" use:enhance class="w-full">
+							<button class="w-full text-start cursor-default" type="submit">Logout</button>
+						</form></DropdownMenu.Item
+					>
 				</DropdownMenu.Content>
 			</DropdownMenu.Root>
 		</div>
