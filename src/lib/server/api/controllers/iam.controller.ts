@@ -1,16 +1,17 @@
 import { inject, injectable } from 'tsyringe';
 import { zValidator } from '@hono/zod-validator';
-import { registerEmailDto } from '../dtos/register-email.dto';
+import { registerEmailDto } from '../../../dtos/register-email.dto';
 import { IamService } from '../services/iam.service';
-import { signInEmailDto } from '../dtos/signin-email.dto';
+import { signInEmailDto } from '../../../dtos/signin-email.dto';
 import { setCookie } from 'hono/cookie';
 import { LuciaProvider } from '../providers/lucia.provider';
 import { requireAuth } from '../middleware/require-auth.middleware';
-import { updateEmailDto } from '../dtos/update-email.dto';
-import { verifyEmailDto } from '../dtos/verify-email.dto';
+import { updateEmailDto } from '../../../dtos/update-email.dto';
+import { verifyEmailDto } from '../../../dtos/verify-email.dto';
 import { Hono } from 'hono';
 import type { HonoTypes } from '../types';
 import type { Controller } from '../interfaces/controller.interface';
+import { limiter } from '../middleware/rate-limiter.middlware';
 
 /* -------------------------------------------------------------------------- */
 /*                                 Controller                                 */
@@ -42,7 +43,7 @@ export class IamController implements Controller {
 	constructor(
 		@inject(IamService) private iamService: IamService,
 		@inject(LuciaProvider) private lucia: LuciaProvider
-	) {}
+	) { }
 
 	routes() {
 		return this.controller
@@ -55,7 +56,7 @@ export class IamController implements Controller {
 				await this.iamService.registerEmail({ email });
 				return c.json({ message: 'Verification email sent' });
 			})
-			.post('/email/signin', zValidator('json', signInEmailDto), async (c) => {
+			.post('/email/signin', zValidator('json', signInEmailDto), limiter({ limit: 15, minutes: 15 }), async (c) => {
 				const { email, token } = c.req.valid('json');
 				const session = await this.iamService.signinEmail({ email, token });
 				const sessionCookie = this.lucia.createSessionCookie(session.id);
@@ -85,12 +86,12 @@ export class IamController implements Controller {
 				});
 				return c.json({ status: 'success' });
 			})
-			.post('/email/update', requireAuth, zValidator('json', updateEmailDto), async (c) => {
+			.post('/email/update', requireAuth, zValidator('json', updateEmailDto), limiter({ limit: 5, minutes: 15 }), async (c) => {
 				const json = c.req.valid('json');
 				await this.iamService.updateEmail(c.var.user.id, json);
 				return c.json({ message: 'Verification email sent' });
 			})
-			.post('/email/verify', requireAuth, zValidator('json', verifyEmailDto), async (c) => {
+			.post('/email/verify', requireAuth, zValidator('json', verifyEmailDto), limiter({ limit: 5, minutes: 15 }), async (c) => {
 				const json = c.req.valid('json');
 				await this.iamService.verifyEmail(c.var.user.id, json.token);
 				return c.json({ message: 'Verified and updated' });

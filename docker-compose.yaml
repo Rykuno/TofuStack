@@ -18,6 +18,25 @@ services:
     volumes:
       - redis_data:/data
 
+  minio:
+    image: docker.io/bitnami/minio
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    networks:
+      - minionetwork
+    volumes:
+      - 'minio_data:/data'
+    environment:
+      - MINIO_ROOT_USER=user
+      - MINIO_ROOT_PASSWORD=password
+      - MINIO_DEFAULT_BUCKETS=dev
 volumes:
   postgres_data:
   redis_data:
+  minio_data:
+    driver: local
+
+networks:
+  minionetwork:
+    driver: bridge

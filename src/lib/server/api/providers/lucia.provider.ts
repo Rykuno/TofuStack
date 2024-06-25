@@ -1,5 +1,5 @@
 import { container } from 'tsyringe';
-import { lucia } from '../common/lucia';
+import { lucia } from '../infrastructure/auth/lucia';
 
 // Symbol
 export const LuciaProvider = Symbol('LUCIA_PROVIDER');

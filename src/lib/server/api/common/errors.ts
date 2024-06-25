@@ -1,5 +1,9 @@
 import { HTTPException } from 'hono/http-exception';
 
+export function TooManyRequests(message: string = 'Too many requests') {
+	return new HTTPException(429, { message });
+}
+
 export function Forbidden(message: string = 'Forbidden') {
 	return new HTTPException(403, { message });
 }

@@ -1,12 +1,12 @@
 import { inject, injectable } from 'tsyringe';
-import type { RegisterEmailDto } from '../dtos/register-email.dto';
+import type { RegisterEmailDto } from '../../../dtos/register-email.dto';
 import { UsersRepository } from '../repositories/users.repository';
 import { MailerService } from './mailer.service';
 import { TokensService } from './tokens.service';
-import type { SignInEmailDto } from '../dtos/signin-email.dto';
+import type { SignInEmailDto } from '../../../dtos/signin-email.dto';
 import { BadRequest } from '../common/errors';
 import { LuciaProvider } from '../providers/lucia.provider';
-import type { UpdateEmailDto } from '../dtos/update-email.dto';
+import type { UpdateEmailDto } from '../../../dtos/update-email.dto';
 
 /* -------------------------------------------------------------------------- */
 /*                                   Service                                  */

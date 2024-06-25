@@ -72,7 +72,6 @@ export class MailerService {
 			text: html,
 			html
 		});
-
 		console.log(nodemailer.getTestMessageUrl(message));
 	}
 
