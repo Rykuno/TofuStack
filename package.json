@@ -19,8 +19,6 @@
 		"test:unit": "vitest"
 	},
 	"devDependencies": {
-		"@dicebear/collection": "^9.0.1",
-		"@dicebear/core": "^9.0.1",
 		"@hono/zod-validator": "^0.2.2",
 		"@lucia-auth/adapter-drizzle": "^1.0.7",
 		"@paralleldrive/cuid2": "^2.2.2",
@@ -49,7 +47,6 @@
 		"ioredis": "^5.4.1",
 		"lucia": "^3.2.0",
 		"lucide-svelte": "^0.396.0",
-		"nanoid": "^5.0.7",
 		"nodemailer": "^6.9.14",
 		"oslo": "^1.2.0",
 		"pg": "^8.12.0",
@@ -76,7 +73,6 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@acpr/rate-limit-postgresql": "^1.4.1",
 		"@internationalized/date": "^3.5.4",
 		"bits-ui": "^0.21.10",
 		"clsx": "^2.1.1",

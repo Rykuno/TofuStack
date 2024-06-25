@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@acpr/rate-limit-postgresql':
-        specifier: ^1.4.1
-        version: 1.4.1(express-rate-limit@7.3.1(express@4.19.2))
       '@internationalized/date':
         specifier: ^3.5.4
         version: 3.5.4
@@ -57,12 +54,6 @@ importers:
         specifier: ^0.3.1
         version: 0.3.1(svelte@5.0.0-next.164)
     devDependencies:
-      '@dicebear/collection':
-        specifier: ^9.0.1
-        version: 9.0.1(@dicebear/core@9.0.1)
-      '@dicebear/core':
-        specifier: ^9.0.1
-        version: 9.0.1
       '@hono/zod-validator':
         specifier: ^0.2.2
         version: 0.2.2(hono@4.4.7)(zod@3.23.8)
@@ -147,9 +138,6 @@ importers:
       lucide-svelte:
         specifier: ^0.396.0
         version: 0.396.0(svelte@5.0.0-next.164)
-      nanoid:
-        specifier: ^5.0.7
-        version: 5.0.7
       nodemailer:
         specifier: ^6.9.14
         version: 6.9.14
@@ -222,11 +210,6 @@ importers:
 
 packages:
 
-  '@acpr/rate-limit-postgresql@1.4.1':
-    resolution: {integrity: sha512-dV/uEYD94onbyO56VJaU43pDXXUeaNqa/zs0V/Ar1BTgmZls5yrqgPqg1x2m5N87AKkMVkKoSxy64T3ldnaOew==}
-    peerDependencies:
-      express-rate-limit: '>=6.0.0'
-
   '@alloc/quick-lru@5.2.0':
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
     engines: {node: '>=10'}
@@ -244,184 +227,6 @@ packages:
   '@babel/runtime@7.24.7':
     resolution: {integrity: sha512-UwgBRMjJP+xv857DCngvqXI3Iq6J4v0wXmwc6sapg+zyhbwmQX67LUEFrkK5tbyJ30jGuG3ZvWpBiB9LCy1kWw==}
     engines: {node: '>=6.9.0'}
-
-  '@dicebear/adventurer-neutral@9.0.1':
-    resolution: {integrity: sha512-Hr2QlhJK8Q2ShlXnq3/QN3PmcWwPsK3HDYnw21jMfAwcFe0YUQpSL/643vQtZwDjWmN1D5emNgGp4r9XwFEdtA==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      '@dicebear/core': ^9.0.0
-
-  '@dicebear/adventurer@9.0.1':
-    resolution: {integrity: sha512-WKuQd115wEHM9qj6g2Xlwg9uug8ngaAxrfHhGdr/BFdXqol7skgbK1dUVHqctXnE/2nNvNFH8q6+paA4MJJjaA==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      '@dicebear/core': ^9.0.0
-
-  '@dicebear/avataaars-neutral@9.0.1':
-    resolution: {integrity: sha512-yHZix7Xd8jnq8NJLUn3cM/63Xe80ZaIqTy37OqSB4mOSxSrAvlQ9YRjVTngzzDUI4aXqIP31OYL0/jZROSVoww==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      '@dicebear/core': ^9.0.0
-
-  '@dicebear/avataaars@9.0.1':
-    resolution: {integrity: sha512-uRTa8x80F5k0QKGB8TpjDcpuY4Uo3EMBxnPdlE2XzL4Q2tb5tKLoI0pxoaFZsQBHhAddDOmS6XrV+WEBElRr8g==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      '@dicebear/core': ^9.0.0
-
-  '@dicebear/big-ears-neutral@9.0.1':
-    resolution: {integrity: sha512-fL8cLOGKzCMf92GiZGQjnw2j7niz0L3uUkDbNL/wCs4Li4JfVjjuDIZKVeJjkwfVlo/7ZJdmcIxnV3oKDNH0UQ==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      '@dicebear/core': ^9.0.0
-
-  '@dicebear/big-ears@9.0.1':
-    resolution: {integrity: sha512-DVWX2eZFz4sXHXS9zZJyLi7ipr1DMSfbLiLse1XzfQ99DqmlhK2vyXqMYAft46ta6AYug0+VBQjXc5zxjJkKiw==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      '@dicebear/core': ^9.0.0
-
-  '@dicebear/big-smile@9.0.1':
-    resolution: {integrity: sha512-BgZjfyFrFtbFuelIMPbFaYHvO582gBxxNkEeTODGeYSv2fx++eFTw2ONFKNFENBLmsobWhe3tHE2Lg+3dtPCNA==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      '@dicebear/core': ^9.0.0
-
-  '@dicebear/bottts-neutral@9.0.1':
-    resolution: {integrity: sha512-RG8TZPizbvcQfm78GdhGMS9hAC/wo/gMYjGo7EjasGk6Y37z2lyfnKJDFAG80LUsgp+i47V9HWgf9uik+Y6czw==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      '@dicebear/core': ^9.0.0
-
-  '@dicebear/bottts@9.0.1':
-    resolution: {integrity: sha512-5A4Bf0mOXnRUOjPRY8dKZA1eOUXlUZm2JKITv/ehDpADuW/clJf9ZtNVxfTLUE89WtT6hgm03/CzeU4+PbKEzQ==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      '@dicebear/core': ^9.0.0
-
-  '@dicebear/collection@9.0.1':
-    resolution: {integrity: sha512-ul2b6wof0Owu7Pwr4/cwqy+Zzu8tXcul6AJ3vhWnj2Kax33hm4MuCHSK10LVeo/+iyAa+5x4tARFly0spb/xRQ==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      '@dicebear/core': ^9.0.0
-
-  '@dicebear/core@9.0.1':
-    resolution: {integrity: sha512-d/ddHcKuJDHefKQMLbFsFh2gX4Ha0QDByp2pSpjJHiOZL97YA/2/Pnbv7m0/HZEH+C+AeHwZxMLwjr/aajbFxA==}
-    engines: {node: '>=18.0.0'}
-
-  '@dicebear/croodles-neutral@9.0.1':
-    resolution: {integrity: sha512-Z1o1Jda7DYZfEIFHcPazbDAwL/RW+BiNaK/oEbzpj/Oe010Iy6+QG5570X1kK8lg5HbTGp6ptS2kyPFipOPAXg==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      '@dicebear/core': ^9.0.0
-
-  '@dicebear/croodles@9.0.1':
-    resolution: {integrity: sha512-b1UvQjpx7JX6V2rGLrUE+VjP5D/X8W12m51RucF4OwayFr+3Iu0gG5luoSEPHt41FtuUEnEZU8kVsgmTm+Kbkw==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      '@dicebear/core': ^9.0.0
-
-  '@dicebear/fun-emoji@9.0.1':
-    resolution: {integrity: sha512-cT2t9eoRsqwSizsuCBHw6C4kXEnc82WwwkXmeSM0gBb2+HqoMoTKGTUEw33Zcei6v9+yMJFvbtXY4YGncNnj9A==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      '@dicebear/core': ^9.0.0
-
-  '@dicebear/icons@9.0.1':
-    resolution: {integrity: sha512-GeMEFq/f6lzKTRC5f53kyMH5o3E6WsYjYditz4rW5QWWlFV3XUyI1PRuTYCN65LnOzCVOIQFtpoO9/hPjKu6kw==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      '@dicebear/core': ^9.0.0
-
-  '@dicebear/identicon@9.0.1':
-    resolution: {integrity: sha512-3SkzwDL0/mH7k0jUS27MK8uM6QJTG5o2pKaNGOUJ0j/G0WTIjwt54x1KtwvED6J3tKT/nvy0qsJULOIVAS1kJw==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      '@dicebear/core': ^9.0.0
-
-  '@dicebear/initials@9.0.1':
-    resolution: {integrity: sha512-mL2xS48MX+Dg4Nf3IqhG1mZkLbuYQQwIIikU/EhY2YeDPtmZZhlIfAQOL6nw/9xecS6B1tmZfUsp966Fl6ploQ==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      '@dicebear/core': ^9.0.0
-
-  '@dicebear/lorelei-neutral@9.0.1':
-    resolution: {integrity: sha512-zucVVFDMMaP2f64m7ByERzH1XtM+0MnzfNhOX/27S0WGsV31bjzMW+nrx0N/+wBoDOCZOq7roT+Yq09MEhU6mw==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      '@dicebear/core': ^9.0.0
-
-  '@dicebear/lorelei@9.0.1':
-    resolution: {integrity: sha512-GlKSsLHd1zSanhAgYxfa9VDtcuF9hGxJPWZVstzlUndU6eASuBmkHCZQVEjJv1V6W4Bos8YonAnzqIeOnDKHMg==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      '@dicebear/core': ^9.0.0
-
-  '@dicebear/micah@9.0.1':
-    resolution: {integrity: sha512-+kxc2u/DlKH8Ljh3Nkrf5DIddcwzqeQf6rn6kQXWApz/TQKM9/Gm8TkUDkddYYNdQRSHkTBDhcUU0agEEVPVXw==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      '@dicebear/core': ^9.0.0
-
-  '@dicebear/miniavs@9.0.1':
-    resolution: {integrity: sha512-G3PrGQm7rAAJPZinskn0Dtstuz2BK1VzgzbMXm0wdCd5F5XdZZJjRGhQwdEcJYMkDzTWclS15Yw/t9KlNNPcsQ==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      '@dicebear/core': ^9.0.0
-
-  '@dicebear/notionists-neutral@9.0.1':
-    resolution: {integrity: sha512-fy9JUKXFNnM/QlRPRhchGqzO//m7B52qGESSM/3xdZWNKwAASbbPGnOC0r/5nrm4ZyXKvb0S67qw7FBkZC3VKQ==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      '@dicebear/core': ^9.0.0
-
-  '@dicebear/notionists@9.0.1':
-    resolution: {integrity: sha512-t16TKE/niXUPk+CdQF4kFxg6FK0IpTauIxrC5TeTFTDG5PUPl1xZS37q9b2qhmDM4ZUpbdIAHYfc24kPORMwfw==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      '@dicebear/core': ^9.0.0
-
-  '@dicebear/open-peeps@9.0.1':
-    resolution: {integrity: sha512-CsLK3Japcsrz0v6sfuX6JjKDmkTvVmcmtx9r0wVF72aiwIDH+e2RjJz9HafvCXmogDN66zMYM/mosRyFuTWYCw==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      '@dicebear/core': ^9.0.0
-
-  '@dicebear/personas@9.0.1':
-    resolution: {integrity: sha512-jgWR70xdSGO3PnurPjSdnFnRriHfN/GqSGSROPn0hHy4thr/scuNgG+yKCYUe2IiSbymKbqwfq4h04qFusxd7g==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      '@dicebear/core': ^9.0.0
-
-  '@dicebear/pixel-art-neutral@9.0.1':
-    resolution: {integrity: sha512-CcCI21+rczQ5I6PkL2fo4Fy0P3MJpn/ZtcOAXly7Co0ai8Wnva+3odFfOt9RLGQCj85N3OiAYE1Kn5Bl7+6jDA==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      '@dicebear/core': ^9.0.0
-
-  '@dicebear/pixel-art@9.0.1':
-    resolution: {integrity: sha512-VQJDrmvgNieUTsSBYE/CTfBurJBLwXP6NCyd3N0lm/xk+OC5esWH/6Oqkn8Rjp8iP5xdNR0rMDY5veBYcf9SLg==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      '@dicebear/core': ^9.0.0
-
-  '@dicebear/rings@9.0.1':
-    resolution: {integrity: sha512-U2L4g9QUIOWcUcbVKjrABj0x8RY6+WJxuJXE81SrSuztTydZ42KbBxXYyjEcdenbzpT4CDtiDgtepD+UFtErig==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      '@dicebear/core': ^9.0.0
-
-  '@dicebear/shapes@9.0.1':
-    resolution: {integrity: sha512-55wbXZ2lgZv+XeV2o4SwHIXPU0vrsKTh4XEnFJcC9HUwzvi5UJTk9kDhp6gcVCz7/sKWYLmd8FLA9mUu3ArN8g==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      '@dicebear/core': ^9.0.0
-
-  '@dicebear/thumbs@9.0.1':
-    resolution: {integrity: sha512-Smrx0GtDfT9YdajyHw1twBOXh0SruWhHUMDGDgsw1tE5bC4AKIPuH/+zAQ+l2eG1WRj27mTvWNFMLgRVHGiMeA==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      '@dicebear/core': ^9.0.0
 
   '@emnapi/core@0.45.0':
     resolution: {integrity: sha512-DPWjcUDQkCeEM4VnljEOEcXdAD7pp8zSZsgOujk/LGIwCXWbXJngin+MO4zbH429lzeC3WbYLGjE2MaUOwzpyw==}
@@ -1363,9 +1168,6 @@ packages:
   '@types/nodemailer@6.4.15':
     resolution: {integrity: sha512-0EBJxawVNjPkng1zm2vopRctuWVCxk34JcIlRuXSf54habUWdz1FB7wHDqOqvDa8Mtpt0Q3LTXQkAs2LNyK5jQ==}
 
-  '@types/pg-pool@2.0.3':
-    resolution: {integrity: sha512-fwK5WtG42Yb5RxAwxm3Cc2dJ39FlgcaNiXKvtTLAwtCn642X7dgel+w1+cLWwpSOFImR3YjsZtbkfjxbHtFAeg==}
-
   '@types/pg@8.11.6':
     resolution: {integrity: sha512-/2WmmBXHLsfRqzfHW7BNZ8SbYzE8OSk7i3WjFYvfgRHj7S1xj+16Je5fUKv3lVdVzk/zn9TXOqf+avFCFIE0yQ==}
 
@@ -1595,10 +1397,6 @@ packages:
 
   buffer-from@1.1.2:
     resolution: {integrity: sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ==}
-
-  buffer-writer@2.0.0:
-    resolution: {integrity: sha512-a7ZpuTZU1TRtnwyCNW3I5dc0wWNC3VR9S++Ewyk2HHZdrO3CQJqSpd+95Us590V6AL7JqUAH2IwZ/398PmNFgw==}
-    engines: {node: '>=4'}
 
   builtin-modules@3.3.0:
     resolution: {integrity: sha512-zhaCDicdLuWN5UbN5IMnFqNMhNfo919sH85y2/ea+5Yg9TsTkeZxpL+JLbp6cgYFS4sRLp3YV4S6yDuqVWHYOw==}
@@ -2756,9 +2554,6 @@ packages:
   package-json-from-dist@1.0.0:
     resolution: {integrity: sha512-dATvCeZN/8wQsGywez1mzHtTlP22H8OEfPrVMLNr4/eGa+ijtLn/6M5f0dY8UKNrC2O9UCU6SSoG3qRKnt7STw==}
 
-  packet-reader@1.0.0:
-    resolution: {integrity: sha512-HAKu/fG3HpHFO0AA8WE8q2g+gBJaZ9MG7fcKk+IJPLTGAD6Psw4443l+9DGRbOIh3/aXr7Phy0TjilYivJo5XQ==}
-
   paneforge@0.0.5:
     resolution: {integrity: sha512-98QHobaN/KeQhqqglbvjUmNCTRC4h4iqDxpSV8jCGhRLttgGlRXZNzWNr4Firni5rwasAZjOza0k/JdwppB/AQ==}
     peerDependencies:
@@ -2828,11 +2623,6 @@ packages:
     resolution: {integrity: sha512-BM/Thnrw5jm2kKLE5uJkXqqExRUY/toLHda65XgFTBTFYZyopbKjBe29Ii3RbkvlsMoFwD+tHeGaCjjv0gHlyw==}
     engines: {node: '>=4'}
 
-  pg-pool@3.6.1:
-    resolution: {integrity: sha512-jizsIzhkIitxCGfPRzJn1ZdcosIt3pz9Sh3V01fm1vZnbnCMgmGl5wvGGdNN2EL9Rmb0EcFoCkixH4Pu+sP9Og==}
-    peerDependencies:
-      pg: '>=8.0'
-
   pg-pool@3.6.2:
     resolution: {integrity: sha512-Htjbg8BlwXqSBQ9V8Vjtc+vzf/6fVUuak/3/XXKA9oxZprwW3IMDQTGHP+KDmVL7rtd+R1QjbnCFPuTHm3G4hg==}
     peerDependencies:
@@ -2848,15 +2638,6 @@ packages:
   pg-types@4.0.2:
     resolution: {integrity: sha512-cRL3JpS3lKMGsKaWndugWQoLOCoP+Cic8oseVcbr0qhPzYD5DWXK+RZ9LY9wxRf7RQia4SCwQlXk0q6FCPrVng==}
     engines: {node: '>=10'}
-
-  pg@8.11.3:
-    resolution: {integrity: sha512-+9iuvG8QfaaUrrph+kpF24cXkH1YOOUeArRNYIxq1viYHZagBxrTno7cecY1Fa44tJeZvaoG+Djpkc3JwehN5g==}
-    engines: {node: '>= 8.0.0'}
-    peerDependencies:
-      pg-native: '>=3.0.1'
-    peerDependenciesMeta:
-      pg-native:
-        optional: true
 
   pg@8.12.0:
     resolution: {integrity: sha512-A+LHUSnwnxrnL/tZ+OLfqR1SxLN3c/pgDztZ47Rpbsd4jUytsTtwQo/TLPRzPJMp/1pbhYVhH9cuSZLAajNfjQ==}
@@ -3001,11 +2782,6 @@ packages:
   postgres-interval@3.0.0:
     resolution: {integrity: sha512-BSNDnbyZCXSxgA+1f5UU2GmwhoI0aU5yMxRGO8CdFEcY2BQF9xm/7MqKnYoM1nJDk8nONNWDk9WeSmePFhQdlw==}
     engines: {node: '>=12'}
-
-  postgres-migrations@5.3.0:
-    resolution: {integrity: sha512-gnTHWJZVWbW8T3mXIxJm1JRU853TqBVWkhgfsTJr7zqT3VexjRmJj9kNi96rVhfTezDU4FVW6pf701kLOZiKIA==}
-    engines: {node: '>10.17.0'}
-    hasBin: true
 
   postgres-range@1.1.4:
     resolution: {integrity: sha512-i/hbxIE9803Alj/6ytL7UHQxRvZkI9O4Sy+J3HGc4F4oo/2eQAjTSNJ0bfxyse3bH0nuVesCk+3IRLaMtG3H6w==}
@@ -3281,10 +3057,6 @@ packages:
   split2@4.2.0:
     resolution: {integrity: sha512-UcjcJOWknrNkF6PLX83qcHM6KHgVKNkV62Y8a5uYDVv9ydGQVwAHMKqHdJje1VTWpljG0WYpCDhrCdAOYH4TWg==}
     engines: {node: '>= 10.x'}
-
-  sql-template-strings@2.2.2:
-    resolution: {integrity: sha512-UXhXR2869FQaD+GMly8jAMCRZ94nU5KcrFetZfWEMd+LVVG6y0ExgHAhatEcKZ/wk8YcKPdi+hiD2wm75lq3/Q==}
-    engines: {node: '>=4.0.0'}
 
   stackback@0.0.2:
     resolution: {integrity: sha512-1XMJE5fQo1jGH6Y/7ebnwPOBEkIEnT4QF32d5R1+VXdXveM0IBMJt8zfaxX1P3QhVwrYe+576+jkANtSS2mBbw==}
@@ -3739,16 +3511,6 @@ packages:
 
 snapshots:
 
-  '@acpr/rate-limit-postgresql@1.4.1(express-rate-limit@7.3.1(express@4.19.2))':
-    dependencies:
-      '@types/pg-pool': 2.0.3
-      express-rate-limit: 7.3.1(express@4.19.2)
-      pg: 8.11.3
-      pg-pool: 3.6.1(pg@8.11.3)
-      postgres-migrations: 5.3.0
-    transitivePeerDependencies:
-      - pg-native
-
   '@alloc/quick-lru@5.2.0': {}
 
   '@ampproject/remapping@2.3.0':
@@ -3767,154 +3529,6 @@ snapshots:
   '@babel/runtime@7.24.7':
     dependencies:
       regenerator-runtime: 0.14.1
-
-  '@dicebear/adventurer-neutral@9.0.1(@dicebear/core@9.0.1)':
-    dependencies:
-      '@dicebear/core': 9.0.1
-
-  '@dicebear/adventurer@9.0.1(@dicebear/core@9.0.1)':
-    dependencies:
-      '@dicebear/core': 9.0.1
-
-  '@dicebear/avataaars-neutral@9.0.1(@dicebear/core@9.0.1)':
-    dependencies:
-      '@dicebear/core': 9.0.1
-
-  '@dicebear/avataaars@9.0.1(@dicebear/core@9.0.1)':
-    dependencies:
-      '@dicebear/core': 9.0.1
-
-  '@dicebear/big-ears-neutral@9.0.1(@dicebear/core@9.0.1)':
-    dependencies:
-      '@dicebear/core': 9.0.1
-
-  '@dicebear/big-ears@9.0.1(@dicebear/core@9.0.1)':
-    dependencies:
-      '@dicebear/core': 9.0.1
-
-  '@dicebear/big-smile@9.0.1(@dicebear/core@9.0.1)':
-    dependencies:
-      '@dicebear/core': 9.0.1
-
-  '@dicebear/bottts-neutral@9.0.1(@dicebear/core@9.0.1)':
-    dependencies:
-      '@dicebear/core': 9.0.1
-
-  '@dicebear/bottts@9.0.1(@dicebear/core@9.0.1)':
-    dependencies:
-      '@dicebear/core': 9.0.1
-
-  '@dicebear/collection@9.0.1(@dicebear/core@9.0.1)':
-    dependencies:
-      '@dicebear/adventurer': 9.0.1(@dicebear/core@9.0.1)
-      '@dicebear/adventurer-neutral': 9.0.1(@dicebear/core@9.0.1)
-      '@dicebear/avataaars': 9.0.1(@dicebear/core@9.0.1)
-      '@dicebear/avataaars-neutral': 9.0.1(@dicebear/core@9.0.1)
-      '@dicebear/big-ears': 9.0.1(@dicebear/core@9.0.1)
-      '@dicebear/big-ears-neutral': 9.0.1(@dicebear/core@9.0.1)
-      '@dicebear/big-smile': 9.0.1(@dicebear/core@9.0.1)
-      '@dicebear/bottts': 9.0.1(@dicebear/core@9.0.1)
-      '@dicebear/bottts-neutral': 9.0.1(@dicebear/core@9.0.1)
-      '@dicebear/core': 9.0.1
-      '@dicebear/croodles': 9.0.1(@dicebear/core@9.0.1)
-      '@dicebear/croodles-neutral': 9.0.1(@dicebear/core@9.0.1)
-      '@dicebear/fun-emoji': 9.0.1(@dicebear/core@9.0.1)
-      '@dicebear/icons': 9.0.1(@dicebear/core@9.0.1)
-      '@dicebear/identicon': 9.0.1(@dicebear/core@9.0.1)
-      '@dicebear/initials': 9.0.1(@dicebear/core@9.0.1)
-      '@dicebear/lorelei': 9.0.1(@dicebear/core@9.0.1)
-      '@dicebear/lorelei-neutral': 9.0.1(@dicebear/core@9.0.1)
-      '@dicebear/micah': 9.0.1(@dicebear/core@9.0.1)
-      '@dicebear/miniavs': 9.0.1(@dicebear/core@9.0.1)
-      '@dicebear/notionists': 9.0.1(@dicebear/core@9.0.1)
-      '@dicebear/notionists-neutral': 9.0.1(@dicebear/core@9.0.1)
-      '@dicebear/open-peeps': 9.0.1(@dicebear/core@9.0.1)
-      '@dicebear/personas': 9.0.1(@dicebear/core@9.0.1)
-      '@dicebear/pixel-art': 9.0.1(@dicebear/core@9.0.1)
-      '@dicebear/pixel-art-neutral': 9.0.1(@dicebear/core@9.0.1)
-      '@dicebear/rings': 9.0.1(@dicebear/core@9.0.1)
-      '@dicebear/shapes': 9.0.1(@dicebear/core@9.0.1)
-      '@dicebear/thumbs': 9.0.1(@dicebear/core@9.0.1)
-
-  '@dicebear/core@9.0.1':
-    dependencies:
-      '@types/json-schema': 7.0.15
-
-  '@dicebear/croodles-neutral@9.0.1(@dicebear/core@9.0.1)':
-    dependencies:
-      '@dicebear/core': 9.0.1
-
-  '@dicebear/croodles@9.0.1(@dicebear/core@9.0.1)':
-    dependencies:
-      '@dicebear/core': 9.0.1
-
-  '@dicebear/fun-emoji@9.0.1(@dicebear/core@9.0.1)':
-    dependencies:
-      '@dicebear/core': 9.0.1
-
-  '@dicebear/icons@9.0.1(@dicebear/core@9.0.1)':
-    dependencies:
-      '@dicebear/core': 9.0.1
-
-  '@dicebear/identicon@9.0.1(@dicebear/core@9.0.1)':
-    dependencies:
-      '@dicebear/core': 9.0.1
-
-  '@dicebear/initials@9.0.1(@dicebear/core@9.0.1)':
-    dependencies:
-      '@dicebear/core': 9.0.1
-
-  '@dicebear/lorelei-neutral@9.0.1(@dicebear/core@9.0.1)':
-    dependencies:
-      '@dicebear/core': 9.0.1
-
-  '@dicebear/lorelei@9.0.1(@dicebear/core@9.0.1)':
-    dependencies:
-      '@dicebear/core': 9.0.1
-
-  '@dicebear/micah@9.0.1(@dicebear/core@9.0.1)':
-    dependencies:
-      '@dicebear/core': 9.0.1
-
-  '@dicebear/miniavs@9.0.1(@dicebear/core@9.0.1)':
-    dependencies:
-      '@dicebear/core': 9.0.1
-
-  '@dicebear/notionists-neutral@9.0.1(@dicebear/core@9.0.1)':
-    dependencies:
-      '@dicebear/core': 9.0.1
-
-  '@dicebear/notionists@9.0.1(@dicebear/core@9.0.1)':
-    dependencies:
-      '@dicebear/core': 9.0.1
-
-  '@dicebear/open-peeps@9.0.1(@dicebear/core@9.0.1)':
-    dependencies:
-      '@dicebear/core': 9.0.1
-
-  '@dicebear/personas@9.0.1(@dicebear/core@9.0.1)':
-    dependencies:
-      '@dicebear/core': 9.0.1
-
-  '@dicebear/pixel-art-neutral@9.0.1(@dicebear/core@9.0.1)':
-    dependencies:
-      '@dicebear/core': 9.0.1
-
-  '@dicebear/pixel-art@9.0.1(@dicebear/core@9.0.1)':
-    dependencies:
-      '@dicebear/core': 9.0.1
-
-  '@dicebear/rings@9.0.1(@dicebear/core@9.0.1)':
-    dependencies:
-      '@dicebear/core': 9.0.1
-
-  '@dicebear/shapes@9.0.1(@dicebear/core@9.0.1)':
-    dependencies:
-      '@dicebear/core': 9.0.1
-
-  '@dicebear/thumbs@9.0.1(@dicebear/core@9.0.1)':
-    dependencies:
-      '@dicebear/core': 9.0.1
 
   '@emnapi/core@0.45.0':
     dependencies:
@@ -4637,15 +4251,12 @@ snapshots:
     dependencies:
       '@types/node': 20.14.8
 
-  '@types/pg-pool@2.0.3':
-    dependencies:
-      '@types/pg': 8.11.6
-
   '@types/pg@8.11.6':
     dependencies:
       '@types/node': 20.14.8
       pg-protocol: 1.6.1
       pg-types: 4.0.2
+    optional: true
 
   '@types/pug@2.0.10': {}
 
@@ -4921,8 +4532,6 @@ snapshots:
   buffer-crc32@0.2.13: {}
 
   buffer-from@1.1.2: {}
-
-  buffer-writer@2.0.0: {}
 
   builtin-modules@3.3.0: {}
 
@@ -6070,7 +5679,8 @@ snapshots:
 
   object-inspect@1.13.2: {}
 
-  obuf@1.1.2: {}
+  obuf@1.1.2:
+    optional: true
 
   on-finished@2.4.1:
     dependencies:
@@ -6111,8 +5721,6 @@ snapshots:
       p-limit: 3.1.0
 
   package-json-from-dist@1.0.0: {}
-
-  packet-reader@1.0.0: {}
 
   paneforge@0.0.5(svelte@5.0.0-next.164):
     dependencies:
@@ -6162,15 +5770,8 @@ snapshots:
 
   pg-int8@1.0.1: {}
 
-  pg-numeric@1.0.2: {}
-
-  pg-pool@3.6.1(pg@8.11.3):
-    dependencies:
-      pg: 8.11.3
-
-  pg-pool@3.6.2(pg@8.11.3):
-    dependencies:
-      pg: 8.11.3
+  pg-numeric@1.0.2:
+    optional: true
 
   pg-pool@3.6.2(pg@8.12.0):
     dependencies:
@@ -6195,18 +5796,7 @@ snapshots:
       postgres-date: 2.1.0
       postgres-interval: 3.0.0
       postgres-range: 1.1.4
-
-  pg@8.11.3:
-    dependencies:
-      buffer-writer: 2.0.0
-      packet-reader: 1.0.0
-      pg-connection-string: 2.6.4
-      pg-pool: 3.6.2(pg@8.11.3)
-      pg-protocol: 1.6.1
-      pg-types: 2.2.0
-      pgpass: 1.0.5
-    optionalDependencies:
-      pg-cloudflare: 1.1.1
+    optional: true
 
   pg@8.12.0:
     dependencies:
@@ -6305,32 +5895,30 @@ snapshots:
 
   postgres-array@2.0.0: {}
 
-  postgres-array@3.0.2: {}
+  postgres-array@3.0.2:
+    optional: true
 
   postgres-bytea@1.0.0: {}
 
   postgres-bytea@3.0.0:
     dependencies:
       obuf: 1.1.2
+    optional: true
 
   postgres-date@1.0.7: {}
 
-  postgres-date@2.1.0: {}
+  postgres-date@2.1.0:
+    optional: true
 
   postgres-interval@1.2.0:
     dependencies:
       xtend: 4.0.2
 
-  postgres-interval@3.0.0: {}
+  postgres-interval@3.0.0:
+    optional: true
 
-  postgres-migrations@5.3.0:
-    dependencies:
-      pg: 8.12.0
-      sql-template-strings: 2.2.2
-    transitivePeerDependencies:
-      - pg-native
-
-  postgres-range@1.1.4: {}
+  postgres-range@1.1.4:
+    optional: true
 
   postgres@3.4.4: {}
 
@@ -6579,8 +6167,6 @@ snapshots:
   source-map@0.6.1: {}
 
   split2@4.2.0: {}
-
-  sql-template-strings@2.2.2: {}
 
   stackback@0.0.2: {}
 

@@ -1,8 +1,8 @@
 import { inject, injectable } from 'tsyringe';
 import { TokensRepository } from '../repositories/tokens.repository';
 import dayjs from 'dayjs';
-import { customAlphabet } from 'nanoid';
 import { DatabaseProvider } from '../providers';
+import { generateRandomString, alphabet } from "oslo/crypto";
 
 /* -------------------------------------------------------------------------- */
 /*                                   Service                                  */
@@ -27,7 +27,7 @@ export class TokensService {
 	constructor(
 		@inject(TokensRepository) private tokensRepository: TokensRepository,
 		@inject(DatabaseProvider) private db: DatabaseProvider
-	) {}
+	) { }
 
 	async create(userId: string, email: string) {
 		return this.tokensRepository.create({
@@ -60,8 +60,8 @@ export class TokensService {
 		return foundToken;
 	}
 
-	private generateToken() {
-		const tokenAlphabet = '123456789ACDEFGHJKLMNPQRSTUVWXYZ'; // O and I removed for readability
-		return customAlphabet(tokenAlphabet, 6)();
+	generateToken() {
+		const alphabet = '23456789ACDEFGHJKLMNPQRSTUVWXYZ'; // alphabet with removed look-alike characters (0, 1, O, I)
+		return generateRandomString(6, alphabet);
 	}
 }

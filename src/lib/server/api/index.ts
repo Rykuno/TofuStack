@@ -3,10 +3,9 @@ import './providers';
 import { Hono } from 'hono';
 import { hc } from 'hono/client';
 import { container } from 'tsyringe';
-import { validateAuthSession, verifyOrigin } from './middleware/auth-session.middleware';
+import { validateAuthSession, verifyOrigin } from './middleware/auth.middleware';
 import { IamController } from './controllers/iam.controller';
 import { config } from './common/config';
-import { limiter } from './middleware/rate-limiter.middlware';
 
 /* -------------------------------------------------------------------------- */
 /*                               Client Request                               */
