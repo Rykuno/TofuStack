@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: web
+    runtime: node
+    region: oregon # optional (defaults to oregon)
+    plan: starter # optional (defaults to starter instance type)
+    branch: main # optional (defaults to master)
+    buildCommand: npm install --force && npm run build
+    startCommand: npm run db:migrate && node build/index.js
+    healthCheckPath: /
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: db
+          property: connectionString
+      - key: PUBLIC_ORIGIN
+        fromDatabase:
+          name: web
+          property: host
+  - type: redis
+    name: private redis
+    ipAllowList: [] # Only allow internal connections
+
+databases:
+  - name: db
+    databaseName: postgres
+    ipAllowList: []

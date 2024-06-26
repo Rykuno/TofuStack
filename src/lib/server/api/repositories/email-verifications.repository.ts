@@ -20,11 +20,10 @@ export class EmailVerificationsRepository implements Repository {
   }
 
   // finds a valid record by token and userId
-  async findValidRecord(userId: string, hashedToken: string) {
+  async findValidRecord(userId: string) {
     return this.db.select().from(emailVerificationsTable).where(
       and(
         eq(emailVerificationsTable.userId, userId),
-        eq(emailVerificationsTable.hashedToken, hashedToken),
         lte(emailVerificationsTable.expiresAt, new Date())
       )).then(takeFirst)
   }

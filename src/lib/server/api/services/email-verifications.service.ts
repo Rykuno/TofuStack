@@ -63,7 +63,7 @@ export class EmailVerificationsService {
   private async findAndBurnEmailVerificationToken(userId: string, token: string) {
     return this.db.transaction(async (trx) => {
       // find a valid record
-      const emailVerificationRecord = await this.emailVerificationsRepository.trxHost(trx).findValidRecord(userId, token);
+      const emailVerificationRecord = await this.emailVerificationsRepository.trxHost(trx).findValidRecord(userId);
       if (!emailVerificationRecord) return null;
 
       // check if the token is valid
