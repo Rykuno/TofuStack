@@ -2,8 +2,9 @@ import { rateLimiter } from "hono-rate-limiter";
 import { RedisStore } from 'rate-limit-redis'
 import RedisClient from 'ioredis'
 import type { HonoTypes } from "../types";
+import { config } from "../common/config";
 
-const client = new RedisClient()
+const client = new RedisClient(config.REDIS_URL)
 
 export function limiter({ limit, minutes, key = "" }: {
   limit: number;
