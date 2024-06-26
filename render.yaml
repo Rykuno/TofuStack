@@ -27,5 +27,5 @@ services:
 
 databases:
   - name: db
-    databaseName: postgres
+    databaseName: tarostack
     ipAllowList: []
