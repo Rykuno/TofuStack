@@ -1,9 +1,9 @@
-import nodemailer from 'nodemailer';
-import { injectable } from 'tsyringe';
-import handlebars from 'handlebars';
-import path from 'path';
 import fs from 'fs';
+import path from 'path';
+import nodemailer from 'nodemailer';
+import handlebars from 'handlebars';
 import { fileURLToPath } from 'url';
+import { injectable } from 'tsyringe';
 
 /* -------------------------------------------------------------------------- */
 /*                                   Service                                  */
@@ -55,7 +55,16 @@ export class MailerService {
 		});
 	}
 
-	sendWelcomeEmail(data: SendTemplate<null>) {
+	sendLoginRequest(data: SendTemplate<{ token: string }>) {
+		const template = handlebars.compile(this.getTemplate('email-verification'));
+		return this.send({
+			to: data.to,
+			subject: 'Login Request',
+			html: template({ token: data.props.token })
+		});
+	}
+
+	sendWelcome(data: SendTemplate<null>) {
 		const template = handlebars.compile(this.getTemplate('welcome'));
 		return this.send({
 			to: data.to,

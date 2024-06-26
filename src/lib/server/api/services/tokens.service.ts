@@ -1,8 +1,7 @@
 import { inject, injectable } from 'tsyringe';
-import { TokensRepository } from '../repositories/tokens.repository';
-import dayjs from 'dayjs';
-import { DatabaseProvider } from '../providers';
-import { generateRandomString, alphabet } from "oslo/crypto";
+import { generateRandomString } from "oslo/crypto";
+import { TimeSpan, createDate, type TimeSpanUnit } from 'oslo';
+import { HashingService } from './hashing.service';
 
 /* -------------------------------------------------------------------------- */
 /*                                   Service                                  */
@@ -24,44 +23,31 @@ simple as possible. This makes the service easier to read, test and understand.
 
 @injectable()
 export class TokensService {
-	constructor(
-		@inject(TokensRepository) private tokensRepository: TokensRepository,
-		@inject(DatabaseProvider) private db: DatabaseProvider
-	) { }
-
-	async create(userId: string, email: string) {
-		return this.tokensRepository.create({
-			userId,
-			email,
-			token: this.generateToken(),
-			expiresAt: dayjs().add(15, 'minutes').toDate()
-		});
-	}
-
-	async validateToken(userId: string, token: string) {
-		const foundToken = await this.db.transaction(async (trx) => {
-			const foundToken = await this.tokensRepository.trxHost(trx).findOneByToken(token);
-			foundToken && (await this.tokensRepository.trxHost(trx).delete(foundToken.id));
-			return foundToken;
-		});
-
-		if (!foundToken) {
-			return false;
-		}
-
-		if (foundToken.userId !== userId) {
-			return false;
-		}
-
-		if (foundToken.expiresAt < new Date()) {
-			return false;
-		}
-
-		return foundToken;
-	}
+	constructor(@inject(HashingService) private readonly hashingService: HashingService) { }
 
 	generateToken() {
 		const alphabet = '23456789ACDEFGHJKLMNPQRSTUVWXYZ'; // alphabet with removed look-alike characters (0, 1, O, I)
 		return generateRandomString(6, alphabet);
+	}
+
+	generateTokenWithExpiry(number: number, lifespan: TimeSpanUnit) {
+		return {
+			token: this.generateToken(),
+			expiry: createDate(new TimeSpan(number, lifespan))
+		}
+	}
+
+	async generateTokenWithExpiryAndHash(number: number, lifespan: TimeSpanUnit) {
+		const token = this.generateToken()
+		const hashedToken = await this.hashingService.hash(token)
+		return {
+			token,
+			hashedToken,
+			expiry: createDate(new TimeSpan(number, lifespan))
+		}
+	}
+
+	async verifyHashedToken(hashedToken: string, token: string) {
+		return this.hashingService.verify(hashedToken, token)
 	}
 }

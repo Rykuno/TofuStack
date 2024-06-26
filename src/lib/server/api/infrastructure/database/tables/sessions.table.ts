@@ -1,6 +1,6 @@
-import { pgTable, text, timestamp } from 'drizzle-orm/pg-core';
-import { usersTable } from './users.table';
 import { cuid2 } from '../utils';
+import { usersTable } from './users.table';
+import { pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
 export const sessionsTable = pgTable('sessions', {
 	id: cuid2('id').primaryKey(),

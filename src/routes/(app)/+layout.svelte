@@ -12,7 +12,7 @@
 	import { page } from '$app/stores';
 	import { enhance } from '$app/forms';
 
-	let { children } = $props();
+	let { children, data } = $props();
 
 	const routes = [
 		{
@@ -86,23 +86,11 @@
 					/>
 				</div>
 			</form>
-			<DropdownMenu.Root>
-				<DropdownMenu.Trigger asChild let:builder>
-					<Button builders={[builder]} variant="secondary" size="icon" class="rounded-full">
-						<CircleUser class="h-5 w-5" />
-						<span class="sr-only">Toggle user menu</span>
-					</Button>
-				</DropdownMenu.Trigger>
-				<DropdownMenu.Content align="end">
-					<DropdownMenu.Item href="/settings">Settings</DropdownMenu.Item>
-					<DropdownMenu.Separator />
-					<DropdownMenu.Item>
-						<form action="/?/logout" method="POST" use:enhance class="w-full">
-							<button class="w-full text-start cursor-default" type="submit">Logout</button>
-						</form></DropdownMenu.Item
-					>
-				</DropdownMenu.Content>
-			</DropdownMenu.Root>
+			{#if data.authedUser}
+				{@render userDropdown()}
+			{:else}
+				<Button href="/register">Login</Button>
+			{/if}
 		</div>
 	</header>
 	<main
@@ -111,3 +99,23 @@
 		{@render children()}
 	</main>
 </div>
+
+{#snippet userDropdown()}
+	<DropdownMenu.Root>
+		<DropdownMenu.Trigger asChild let:builder>
+			<Button builders={[builder]} variant="secondary" size="icon" class="rounded-full">
+				<CircleUser class="h-5 w-5" />
+				<span class="sr-only">Toggle user menu</span>
+			</Button>
+		</DropdownMenu.Trigger>
+		<DropdownMenu.Content align="end">
+			<DropdownMenu.Item href="/settings">Settings</DropdownMenu.Item>
+			<DropdownMenu.Separator />
+			<DropdownMenu.Item>
+				<form action="/?/logout" method="POST" use:enhance class="w-full">
+					<button class="w-full cursor-default text-start" type="submit">Logout</button>
+				</form></DropdownMenu.Item
+			>
+		</DropdownMenu.Content>
+	</DropdownMenu.Root>
+{/snippet}

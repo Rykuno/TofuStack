@@ -1,17 +1,19 @@
+import { Hono } from 'hono';
+import { setCookie } from 'hono/cookie';
+import type { HonoTypes } from '../types';
 import { inject, injectable } from 'tsyringe';
 import { zValidator } from '@hono/zod-validator';
-import { registerEmailDto } from '../../../dtos/register-email.dto';
 import { IamService } from '../services/iam.service';
-import { signInEmailDto } from '../../../dtos/signin-email.dto';
-import { setCookie } from 'hono/cookie';
 import { LuciaProvider } from '../providers/lucia.provider';
+import { requireAuth } from '../middleware/auth.middleware';
+import { limiter } from '../middleware/rate-limiter.middlware';
+import { signInEmailDto } from '../../../dtos/signin-email.dto';
 import { updateEmailDto } from '../../../dtos/update-email.dto';
 import { verifyEmailDto } from '../../../dtos/verify-email.dto';
-import { Hono } from 'hono';
-import type { HonoTypes } from '../types';
+import { registerEmailDto } from '../../../dtos/register-email.dto';
 import type { Controller } from '../interfaces/controller.interface';
-import { limiter } from '../middleware/rate-limiter.middlware';
-import { requireAuth } from '../middleware/auth.middleware';
+import { EmailVerificationsService } from '../services/email-verifications.service';
+import { LoginRequestsService } from '../services/login-requests.service';
 
 /* -------------------------------------------------------------------------- */
 /*                                 Controller                                 */
@@ -42,6 +44,8 @@ export class IamController implements Controller {
 
 	constructor(
 		@inject(IamService) private iamService: IamService,
+		@inject(LoginRequestsService) private loginRequestsService: LoginRequestsService,
+		@inject(EmailVerificationsService) private emailVerificationsService: EmailVerificationsService,
 		@inject(LuciaProvider) private lucia: LuciaProvider
 	) { }
 
@@ -51,14 +55,14 @@ export class IamController implements Controller {
 				const user = c.var.user;
 				return c.json({ user: user });
 			})
-			.post('/email/register', zValidator('json', registerEmailDto), async (c) => {
+			.post('/login/request', zValidator('json', registerEmailDto), limiter({ limit: 10, minutes: 60 }), async (c) => {
 				const { email } = c.req.valid('json');
-				await this.iamService.registerEmail({ email });
+				await this.loginRequestsService.create({ email });
 				return c.json({ message: 'Verification email sent' });
 			})
-			.post('/email/signin', zValidator('json', signInEmailDto), limiter({ limit: 15, minutes: 15 }), async (c) => {
+			.post('/login/verify', zValidator('json', signInEmailDto), limiter({ limit: 10, minutes: 60 }), async (c) => {
 				const { email, token } = c.req.valid('json');
-				const session = await this.iamService.signinEmail({ email, token });
+				const session = await this.loginRequestsService.verify({ email, token });
 				const sessionCookie = this.lucia.createSessionCookie(session.id);
 				setCookie(c, sessionCookie.name, sessionCookie.value, {
 					path: sessionCookie.attributes.path,
@@ -86,14 +90,14 @@ export class IamController implements Controller {
 				});
 				return c.json({ status: 'success' });
 			})
-			.post('/email/update', requireAuth, zValidator('json', updateEmailDto), limiter({ limit: 5, minutes: 15 }), async (c) => {
+			.post('/email/sendVerification', requireAuth, zValidator('json', updateEmailDto), limiter({ limit: 10, minutes: 60 }), async (c) => {
 				const json = c.req.valid('json');
-				await this.iamService.updateEmail(c.var.user.id, json);
+				await this.emailVerificationsService.dispatchEmailVerificationToken(c.var.user.id, json.email);
 				return c.json({ message: 'Verification email sent' });
 			})
-			.post('/email/verify', requireAuth, zValidator('json', verifyEmailDto), limiter({ limit: 5, minutes: 15 }), async (c) => {
+			.post('/email/verify', requireAuth, zValidator('json', verifyEmailDto), limiter({ limit: 10, minutes: 60 }), async (c) => {
 				const json = c.req.valid('json');
-				await this.iamService.verifyEmail(c.var.user.id, json.token);
+				await this.emailVerificationsService.processEmailVerificationToken(c.var.user.id, json.token);
 				return c.json({ message: 'Verified and updated' });
 			});
 	}

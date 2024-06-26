@@ -1,26 +1,25 @@
 <script lang="ts">
-	import { cn } from "$lib/utils/ui";
-  import { PinInput, type PinInputProps } from "bits-ui";
+	import { cn } from '$lib/utils/ui';
+	import { PinInput, type PinInputProps } from 'bits-ui';
 
-  interface Props extends Omit<PinInputProps, 'value'> {
-    value: string
-    inputCount?: number 
-  }
- 
-  let {value = $bindable(), inputCount = 6, ...rest}: Props = $props();
-  let pin = $state<string[] | undefined>(value?.split("") ?? [])
-  let inputs = $derived(Array(inputCount).fill(null))
+	interface Props extends Omit<PinInputProps, 'value'> {
+		value: string;
+		inputCount?: number;
+	}
 
+	let { value = $bindable(), inputCount = 6, ...rest }: Props = $props();
+	let pin = $state<string[] | undefined>(value?.split('') ?? []);
+	let inputs = $derived(Array(inputCount).fill(null));
 
-  $effect(() => {
-    value = pin?.join("") ?? ""
-  })
+	$effect(() => {
+		value = pin?.join('') ?? '';
+	});
 </script>
 
 <PinInput.Root
 	{...rest}
 	bind:value={pin}
-	class={cn("flex items-center gap-2", rest.class)}
+	class={cn('flex items-center gap-2', rest.class)}
 	type="text"
 	placeholder=""
 >

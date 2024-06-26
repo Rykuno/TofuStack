@@ -1,12 +1,12 @@
-<script context="module">
+<script context="module" lang="ts">
 	import type { SuperValidated, Infer } from 'sveltekit-superforms';
 	import type { updateEmailDto } from '$lib/dtos/update-email.dto';
 	import type { verifyEmailDto } from '$lib/dtos/verify-email.dto';
 
-	export type UpdateEmailCardProps = {
+	interface UpdateEmailCardProps {
 		updateEmailForm: SuperValidated<Infer<typeof updateEmailDto>>;
 		verifyEmailForm: SuperValidated<Infer<typeof verifyEmailDto>>;
-	};
+	}
 </script>
 
 <script lang="ts">
@@ -16,7 +16,6 @@
 	import { superForm } from 'sveltekit-superforms';
 	import * as Dialog from '$lib/components/ui/dialog';
 	import PinInput from '$lib/components/pin-input.svelte';
-	import { toastMessage } from '$lib/utils/superforms';
 
 	/* ---------------------------------- props --------------------------------- */
 	let { updateEmailForm, verifyEmailForm }: UpdateEmailCardProps = $props();
