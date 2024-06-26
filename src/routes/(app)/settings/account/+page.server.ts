@@ -18,7 +18,7 @@ export const actions = {
 	updateEmail: async ({ request, locals }) => {
 		const updateEmailForm = await superValidate(request, zod(updateEmailDto));
 		if (!updateEmailForm.valid) return fail(StatusCodes.BAD_REQUEST, { updateEmailForm })
-		const { data, error } = await locals.api.iam.email.sendVerification.$post({ json: updateEmailForm.data }).then(locals.parseApiResponse);
+		const { error } = await locals.api.iam.email.sendVerification.$post({ json: updateEmailForm.data }).then(locals.parseApiResponse);
 		if (error) return setError(updateEmailForm, 'email', error);
 		return { updateEmailForm }
 	},
