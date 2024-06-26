@@ -11,15 +11,17 @@ services:
     envVars:
       - key: DATABASE_URL
         fromDatabase:
-          name: db
+          name: tarostack
           property: connectionString
       - key: REDIS_URL
-        fromDatabase:
+        fromService:
           name: redis
+          type: redis
           property: connectionString
       - key: PUBLIC_ORIGIN
-        fromDatabase:
+        fromService:
           name: web
+          type: web
           property: host
   - type: redis
     name: redis
