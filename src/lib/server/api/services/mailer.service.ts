@@ -46,8 +46,8 @@ export class MailerService {
 		}
 	});
 
-	sendEmailVerification(data: SendTemplate<{ token: string }>) {
-		const template = handlebars.compile(this.getTemplate('email-verification'));
+	sendEmailVerificationToken(data: SendTemplate<{ token: string }>) {
+		const template = handlebars.compile(this.getTemplate('email-verification-token'));
 		return this.send({
 			to: data.to,
 			subject: 'Email Verification',
@@ -55,8 +55,17 @@ export class MailerService {
 		});
 	}
 
+	sendEmailChangeNotification(data: SendTemplate<null>) {
+		const template = handlebars.compile(this.getTemplate('email-change-notice'));
+		return this.send({
+			to: data.to,
+			subject: 'Email Change Notice',
+			html: template(null)
+		});
+	}
+
 	sendLoginRequest(data: SendTemplate<{ token: string }>) {
-		const template = handlebars.compile(this.getTemplate('email-verification'));
+		const template = handlebars.compile(this.getTemplate('email-verification-token'));
 		return this.send({
 			to: data.to,
 			subject: 'Login Request',
@@ -88,7 +97,7 @@ export class MailerService {
 		const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
 		const __dirname = path.dirname(__filename); // get the name of the directory
 		return fs.readFileSync(
-			path.join(__dirname, `../infrastructure/email-templates/${template}.handlebars`),
+			path.join(__dirname, `../infrastructure/email-templates/${template}.hbs`),
 			'utf-8'
 		);
 	}

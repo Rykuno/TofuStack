@@ -90,14 +90,16 @@ export class IamController implements Controller {
 				});
 				return c.json({ status: 'success' });
 			})
-			.post('/email/sendVerification', requireAuth, zValidator('json', updateEmailDto), limiter({ limit: 10, minutes: 60 }), async (c) => {
+			.patch('/email', requireAuth, zValidator('json', updateEmailDto), limiter({ limit: 10, minutes: 60 }), async (c) => {
 				const json = c.req.valid('json');
-				await this.emailVerificationsService.dispatchEmailVerificationToken(c.var.user.id, json.email);
+				await this.emailVerificationsService.dispatchEmailVerificationRequest(c.var.user.id, json.email);
 				return c.json({ message: 'Verification email sent' });
 			})
-			.post('/email/verify', requireAuth, zValidator('json', verifyEmailDto), limiter({ limit: 10, minutes: 60 }), async (c) => {
+			// this could also be named to use custom methods, aka /email:verify
+			// https://cloud.google.com/apis/design/custom_methods
+			.post('/email/verification', requireAuth, zValidator('json', verifyEmailDto), limiter({ limit: 10, minutes: 60 }), async (c) => {
 				const json = c.req.valid('json');
-				await this.emailVerificationsService.processEmailVerificationToken(c.var.user.id, json.token);
+				await this.emailVerificationsService.processEmailVerificationRequest(c.var.user.id, json.token);
 				return c.json({ message: 'Verified and updated' });
 			});
 	}

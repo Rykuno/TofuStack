@@ -6,24 +6,6 @@ import { TokensService } from './tokens.service';
 import { UsersRepository } from '../repositories/users.repository';
 import { EmailVerificationsRepository } from '../repositories/email-verifications.repository';
 
-/* -------------------------------------------------------------------------- */
-/*                                   Service                                  */
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
-/* ---------------------------------- About --------------------------------- */
-/*
-Services are responsible for handling business logic and data manipulation. 
-They genreally call on repositories or other services to complete a use-case.
-*/
-/* ---------------------------------- Notes --------------------------------- */
-/*
-Services should be kept as clean and simple as possible. 
-
-Create private functions to handle complex logic and keep the public methods as 
-simple as possible. This makes the service easier to read, test and understand.
-*/
-/* -------------------------------------------------------------------------- */
-
 @injectable()
 export class EmailVerificationsService {
   constructor(
@@ -34,29 +16,36 @@ export class EmailVerificationsService {
     @inject(EmailVerificationsRepository) private readonly emailVerificationsRepository: EmailVerificationsRepository,
   ) { }
 
-
-  async dispatchEmailVerificationToken(userId: string, requestedEmail: string) {
+  // These steps follow the process outlined in OWASP's "Changing A User's Email Address" guide.
+  // https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html#changing-a-users-registered-email-address
+  async dispatchEmailVerificationRequest(userId: string, requestedEmail: string) {
     // generate a token and expiry
     const { token, expiry, hashedToken } = await this.tokensService.generateTokenWithExpiryAndHash(15, 'm')
+    const user = await this.usersRepository.findOneByIdOrThrow(userId)
 
     // create a new email verification record
     await this.emailVerificationsRepository.create({ requestedEmail, userId, hashedToken, expiresAt: expiry })
 
-    // send the verification email - we don't need to await success and will opt for good-faith since we 
-    // will offer a way to resend the email if it fails
-    this.mailerService.sendEmailVerification({
+    // A confirmation-required email message to the proposed new address, instructing the user to 
+    // confirm the change and providing a link for unexpected situations
+    this.mailerService.sendEmailVerificationToken({
       to: requestedEmail,
       props: {
         token
       }
     })
+
+    // A notification-only email message to the current address, alerting the user to the impending change and 
+    // providing a link for an unexpected situation.
+    this.mailerService.sendEmailChangeNotification({
+      to: user.email,
+      props: null
+    })
   }
 
-  async processEmailVerificationToken(userId: string, token: string) {
+  async processEmailVerificationRequest(userId: string, token: string) {
     const validRecord = await this.findAndBurnEmailVerificationToken(userId, token)
     if (!validRecord) throw BadRequest('Invalid token');
-
-    // burn the token and update the user
     await this.usersRepository.update(userId, { email: validRecord.requestedEmail, verified: true });
   }
 

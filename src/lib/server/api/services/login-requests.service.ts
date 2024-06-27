@@ -50,6 +50,7 @@ export class LoginRequestsService {
   private async handleNewUserRegistration(email: string) {
     const newUser = await this.usersRepository.create({ email, verified: true, avatar: null })
     this.mailerService.sendWelcome({ to: email, props: null });
+    // TODO: add whatever onboarding process or extra data you need here
     return newUser
   }
 

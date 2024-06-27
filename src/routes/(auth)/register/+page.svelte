@@ -67,7 +67,7 @@
 			{:else}
 				{@render emailForm()}
 			{/if}
-			<Button variant="outline" class="w-full">Login with Discord</Button>
+			<!-- <Button variant="outline" class="w-full">Login with Discord</Button> -->
 		</div>
 		<div class="mt-4 text-center text-sm">
 			By registering, you agree to our <a href="##" class="underline">Terms of Service</a>

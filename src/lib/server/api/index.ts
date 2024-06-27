@@ -6,7 +6,6 @@ import { container } from 'tsyringe';
 import { validateAuthSession, verifyOrigin } from './middleware/auth.middleware';
 import { IamController } from './controllers/iam.controller';
 import { config } from './common/config';
-import { UsersController } from './controllers/users.controller';
 
 /* -------------------------------------------------------------------------- */
 /*                               Client Request                               */

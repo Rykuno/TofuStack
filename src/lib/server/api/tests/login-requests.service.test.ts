@@ -36,9 +36,9 @@ describe('LoginRequestService', () => {
 
   describe('Create', () => {
     tokensService.generateTokenWithExpiryAndHash = vi.fn().mockResolvedValue({
-      token: "111",
+      token: "1",
       expiry: new Date(),
-      hashedToken: "111"
+      hashedToken: "xyz"
     } satisfies Awaited<ReturnType<typeof tokensService.generateTokenWithExpiryAndHash>>)
 
     loginRequestsRepository.create = vi.fn().mockResolvedValue({

@@ -26,12 +26,18 @@ export type UpdateUser = Partial<CreateUser>;
 
 @injectable()
 export class UsersRepository implements Repository {
-	constructor(@inject(DatabaseProvider) private db: DatabaseProvider) {}
+	constructor(@inject(DatabaseProvider) private db: DatabaseProvider) { }
 
 	async findOneById(id: string) {
 		return this.db.query.usersTable.findFirst({
 			where: eq(usersTable.id, id)
 		});
+	}
+
+	async findOneByIdOrThrow(id: string) {
+		const user = await this.findOneById(id);
+		if (!user) throw Error('User not found');
+		return user;
 	}
 
 	async findOneByEmail(email: string) {
