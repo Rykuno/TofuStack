@@ -2,7 +2,7 @@ import { inject, injectable } from "tsyringe";
 import { DatabaseProvider } from "../providers";
 import type { Repository } from "../interfaces/repository.interface";
 import { and, eq, gte, type InferInsertModel } from "drizzle-orm";
-import { takeFirst } from "../infrastructure/database/utils";
+import { takeFirst, takeFirstOrThrow } from "../infrastructure/database/utils";
 import { loginRequestsTable } from "../infrastructure/database/tables/login-requests.table";
 
 export type CreateLoginRequest = Pick<InferInsertModel<typeof loginRequestsTable>, 'email' | 'expiresAt' | 'hashedToken'>;
@@ -15,7 +15,7 @@ export class LoginRequestsRepository implements Repository {
     return this.db.insert(loginRequestsTable).values(data).onConflictDoUpdate({
       target: loginRequestsTable.email,
       set: data
-    })
+    }).returning().then(takeFirstOrThrow)
   }
 
   async findOneByEmail(email: string) {

@@ -1,6 +1,6 @@
 import { inject, injectable } from "tsyringe";
 import { DatabaseProvider } from "../providers";
-import { and, eq, lte, type InferInsertModel } from "drizzle-orm";
+import { and, eq, gte, lte, type InferInsertModel } from "drizzle-orm";
 import type { Repository } from "../interfaces/repository.interface";
 import { takeFirst, takeFirstOrThrow } from "../infrastructure/database/utils";
 import { emailVerificationsTable } from "../infrastructure/database/tables/email-verifications.table";
@@ -24,7 +24,7 @@ export class EmailVerificationsRepository implements Repository {
     return this.db.select().from(emailVerificationsTable).where(
       and(
         eq(emailVerificationsTable.userId, userId),
-        lte(emailVerificationsTable.expiresAt, new Date())
+        gte(emailVerificationsTable.expiresAt, new Date())
       )).then(takeFirst)
   }
 

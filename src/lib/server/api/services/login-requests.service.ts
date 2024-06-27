@@ -17,16 +17,16 @@ export class LoginRequestsService {
     @inject(TokensService) private readonly tokensService: TokensService,
     @inject(MailerService) private readonly mailerService: MailerService,
     @inject(UsersRepository) private readonly usersRepository: UsersRepository,
-    @inject(LoginRequestsRepository) private readonly loginRequetsRepository: LoginRequestsRepository,
+    @inject(LoginRequestsRepository) private readonly loginRequestsRepository: LoginRequestsRepository,
   ) { }
 
   async create(data: RegisterEmailDto) {
     // generate a token, expiry date, and hash
     const { token, expiry, hashedToken } = await this.tokensService.generateTokenWithExpiryAndHash(15, 'm');
     // save the login request to the database - ensuring we save the hashedToken
-    await this.loginRequetsRepository.create({ email: data.email, hashedToken, expiresAt: expiry });
+    await this.loginRequestsRepository.create({ email: data.email, hashedToken, expiresAt: expiry });
     // send the login request email
-    this.mailerService.sendLoginRequest({
+    await this.mailerService.sendLoginRequest({
       to: data.email,
       props: { token: token }
     });
@@ -57,7 +57,7 @@ export class LoginRequestsService {
   private async fetchValidRequest(email: string, token: string) {
     return await this.db.transaction(async (trx) => {
       // fetch the login request
-      const loginRequest = await this.loginRequetsRepository.trxHost(trx).findOneByEmail(email)
+      const loginRequest = await this.loginRequestsRepository.trxHost(trx).findOneByEmail(email)
       if (!loginRequest) return null;
 
       // check if the token is valid
@@ -65,7 +65,7 @@ export class LoginRequestsService {
       if (!isValidRequest) return null
 
       // if the token is valid, burn the request
-      await this.loginRequetsRepository.trxHost(trx).deleteById(loginRequest.id);
+      await this.loginRequestsRepository.trxHost(trx).deleteById(loginRequest.id);
       return loginRequest
     })
   }
