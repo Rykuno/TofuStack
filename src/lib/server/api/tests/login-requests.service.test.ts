@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { LoginRequestsService } from '../services/login-requests.service';
-import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import { TokensService } from '../services/tokens.service';
 import { MailerService } from '../services/mailer.service';
 import { UsersRepository } from '../repositories/users.repository';

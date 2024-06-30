@@ -6,7 +6,7 @@ If you forked this repository before May 27th, you'll want to view commit `653e2
 
 ## ❔ What
 
-A scalable, testable, extensible, template for Sveltekit. 
+A scalable, testable, extensible, template for Sveltekit.
 
 Sveltekit is awesome, but sometimes you need a bit more capability in the backend than what frameworks like
 NextJS & Sveltekit can deliver.
@@ -25,25 +25,35 @@ export const DELETE: RequestHandler = ({ request }) => app.fetch(request);
 export const POST: RequestHandler = ({ request }) => app.fetch(request);
 ```
 
+## Local Setup
+
+1. Make sure Docker is running
+2. Copy the `.env.example` file and rename to `.env`
+3. `pnpm install`
+4. `pnpm initialize`(this will start the docker-compose and run the initial database migration.)
+5. `pnpm dev`
+
+No additional setup is required, zero api keys, zero services to signup for, zero cost.
+
 ## How to Use
 
-This is **not** supposed to serve as an all batteries included ["production boilerplate"](https://github.com/ixartz/Next-js-Boilerplate) with 200 useless sponsored features that get in your way. Templates that do this are ANYTHING but "production" and "quick start". 
+This is **not** supposed to serve as an all batteries included ["production boilerplate"](https://github.com/ixartz/Next-js-Boilerplate) with 200 useless sponsored features that get in your way. Templates that do this are ANYTHING but "production" and "quick start".
 
 This is stack is designed to be library agnostic. The philosophy here is to boostrap the concrete, repetitive, and time consuming tasks that every application will need reguardless of what you're building.
 
-**So - fork this repo, add your favorite libraries, and build out your own "more opinionated" personal template tailored to you**! 
+**So - fork this repo, add your favorite libraries, and build out your own "more opinionated" personal template tailored to you**!
 
 ## Features
 
 - 🟢 Full E2E typesafety
 - 🟢 RPC Client for API Requests
 - 🟢 Custom Fetch Wrapper
-- 🔴 Deployment Template
+- 🟢 Deployment Template
 - 🟠 Authentication
   - 🟢 Email/Passkey
   - 🔴 OAuth
   - 🟢 Email Update/Verifiaction
-  - 🔴 Rate limiter 
+  - 🟢 Rate limiter
 
 ## Technologies
 

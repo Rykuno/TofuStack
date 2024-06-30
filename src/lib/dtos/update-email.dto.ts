@@ -19,6 +19,6 @@ ensure that the correct data is being passed around.
 /* -------------------------------------------------------------------------- */
 
 export const updateEmailDto = z.object({
-	email: z.string()
+	email: z.string().email()
 });
 export type UpdateEmailDto = z.infer<typeof updateEmailDto>;
