@@ -1,10 +1,12 @@
 import { inject, injectable } from 'tsyringe';
-import { BadRequest } from '../common/errors';
-import { DatabaseProvider } from '../providers';
 import { MailerService } from './mailer.service';
 import { TokensService } from './tokens.service';
 import { UsersRepository } from '../repositories/users.repository';
 import { EmailVerificationsRepository } from '../repositories/email-verifications.repository';
+import { DatabaseProvider } from '../providers/database.provider';
+import { EmailChangeNoticeEmail } from '../emails/email-change-notice.email';
+import { LoginVerificationEmail } from '../emails/login-verification.email';
+import { BadRequest } from '../common/exceptions';
 
 @injectable()
 export class EmailVerificationsService {
@@ -28,18 +30,16 @@ export class EmailVerificationsService {
 
     // A confirmation-required email message to the proposed new address, instructing the user to 
     // confirm the change and providing a link for unexpected situations
-    this.mailerService.sendEmailVerificationToken({
+    this.mailerService.send({
       to: requestedEmail,
-      props: {
-        token
-      }
+      email: new LoginVerificationEmail(token)
     })
 
     // A notification-only email message to the current address, alerting the user to the impending change and 
     // providing a link for an unexpected situation.
-    this.mailerService.sendEmailChangeNotification({
+    this.mailerService.send({
       to: user.email,
-      props: null
+      email: new EmailChangeNoticeEmail()
     })
   }
 

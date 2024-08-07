@@ -1,29 +1,75 @@
 import { inject, injectable } from 'tsyringe';
+import { MailerService } from './mailer.service';
+import { TokensService } from './tokens.service';
 import { LuciaProvider } from '../providers/lucia.provider';
-
-/* -------------------------------------------------------------------------- */
-/*                                   Service                                  */
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
-/* ---------------------------------- About --------------------------------- */
-/*
-Services are responsible for handling business logic and data manipulation. 
-They genreally call on repositories or other services to complete a use-case.
-*/
-/* ---------------------------------- Notes --------------------------------- */
-/*
-Services should be kept as clean and simple as possible. 
-
-Create private functions to handle complex logic and keep the public methods as 
-simple as possible. This makes the service easier to read, test and understand.
-*/
-/* -------------------------------------------------------------------------- */
+import { UsersRepository } from '../repositories/users.repository';
+import type { SignInEmailDto } from '../dtos/signin-email.dto';
+import type { RegisterEmailDto } from '../dtos/register-email.dto';
+import { LoginRequestsRepository } from '../repositories/login-requests.repository';
+import { LoginVerificationEmail } from '../emails/login-verification.email';
+import { DatabaseProvider } from '../providers/database.provider';
+import { BadRequest } from '../common/exceptions';
+import { WelcomeEmail } from '../emails/welcome.email';
 
 @injectable()
 export class IamService {
 	constructor(
 		@inject(LuciaProvider) private readonly lucia: LuciaProvider,
+		@inject(DatabaseProvider) private readonly db: DatabaseProvider,
+		@inject(TokensService) private readonly tokensService: TokensService,
+		@inject(MailerService) private readonly mailerService: MailerService,
+		@inject(UsersRepository) private readonly usersRepository: UsersRepository,
+		@inject(LoginRequestsRepository) private readonly loginRequestsRepository: LoginRequestsRepository,
+
 	) { }
+
+	async createLoginRequest(data: RegisterEmailDto) {
+		// generate a token, expiry date, and hash
+		const { token, expiry, hashedToken } = await this.tokensService.generateTokenWithExpiryAndHash(15, 'm');
+		// save the login request to the database - ensuring we save the hashedToken
+		await this.loginRequestsRepository.create({ email: data.email, hashedToken, expiresAt: expiry });
+		// send the login request email
+		await this.mailerService.send({ email: new LoginVerificationEmail(token), to: data.email });
+	}
+
+	async verifyLoginRequest(data: SignInEmailDto) {
+		const validLoginRequest = await this.getValidLoginRequest(data.email, data.token);
+		if (!validLoginRequest) throw BadRequest('Invalid token');
+
+		let existingUser = await this.usersRepository.findOneByEmail(data.email);
+
+		if (!existingUser) {
+			const newUser = await this.handleNewUserRegistration(data.email);
+			return this.lucia.createSession(newUser.id, {});
+		}
+
+		return this.lucia.createSession(existingUser.id, {});
+	}
+
+	// Create a new user and send a welcome email - or other onboarding process
+	private async handleNewUserRegistration(email: string) {
+		const newUser = await this.usersRepository.create({ email, verified: true })
+		await this.mailerService.send({ email: new WelcomeEmail(), to: newUser.email });
+		// TODO: add whatever onboarding process or extra data you need here
+		return newUser
+	}
+
+	// Fetch a valid request from the database, verify the token and burn the request if it is valid
+	private async getValidLoginRequest(email: string, token: string) {
+		return await this.db.transaction(async (trx) => {
+			// fetch the login request
+			const loginRequest = await this.loginRequestsRepository.trxHost(trx).findOneByEmail(email)
+			if (!loginRequest) return null;
+
+			// check if the token is valid
+			const isValidRequest = await this.tokensService.verifyHashedToken(loginRequest.hashedToken, token);
+			if (!isValidRequest) return null
+
+			// if the token is valid, burn the request
+			await this.loginRequestsRepository.trxHost(trx).deleteById(loginRequest.id);
+			return loginRequest
+		})
+	}
 
 	async logout(sessionId: string) {
 		return this.lucia.invalidateSession(sessionId);

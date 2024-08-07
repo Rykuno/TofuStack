@@ -1,31 +1,15 @@
 import 'reflect-metadata';
-import './providers';
 import { Hono } from 'hono';
 import { hc } from 'hono/client';
 import { container } from 'tsyringe';
-import { validateAuthSession, verifyOrigin } from './middleware/auth.middleware';
 import { IamController } from './controllers/iam.controller';
-import { config } from './common/config';
+import { env } from './configs/envs.config';
+import { validateAuthSession, verifyOrigin } from './middlewares/auth.middleware';
+// import { TestJob } from './jobs/test.job';
+import { glob, globSync } from 'glob';
+import path from 'path';
 
-/* -------------------------------------------------------------------------- */
-/*                               Client Request                               */
-/* ------------------------------------ ▲ ----------------------------------- */
-/* ------------------------------------ | ----------------------------------- */
-/* ------------------------------------ ▼ ----------------------------------- */
-/*                                 Controller                                 */
-/* ---------------------------- (Request Routing) --------------------------- */
-/* ------------------------------------ ▲ ----------------------------------- */
-/* ------------------------------------ | ----------------------------------- */
-/* ------------------------------------ ▼ ----------------------------------- */
-/*                                   Service                                  */
-/* ---------------------------- (Business logic) ---------------------------- */
-/* ------------------------------------ ▲ ----------------------------------- */
-/* ------------------------------------ | ----------------------------------- */
-/* ------------------------------------ ▼ ----------------------------------- */
-/*                                 Repository                                 */
-/* ----------------------------- (Data storage) ----------------------------- */
-/* -------------------------------------------------------------------------- */
-
+console.log('API SERVER STARTED');
 /* ----------------------------------- Api ---------------------------------- */
 const app = new Hono().basePath('/api');
 
@@ -39,7 +23,18 @@ const routes = app
 /* -------------------------------------------------------------------------- */
 /*                                   Exports                                  */
 /* -------------------------------------------------------------------------- */
-export const rpc = hc<typeof routes>(config.ORIGIN);
+export const rpc = hc<typeof routes>(env.ORIGIN);
 export type ApiClient = typeof rpc;
 export type ApiRoutes = typeof routes;
 export { app };
+
+async function resolveJobs() {
+	const jobFiles = globSync('**/*.job.*');
+
+	for (const file of jobFiles) {
+		const module = await import(path.resolve(file));
+		container.resolve(module.default)
+	}
+}
+
+resolveJobs();

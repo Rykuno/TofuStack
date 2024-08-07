@@ -1,4 +1,4 @@
-import type { Email } from "../interfaces/email.interface";
+import type { Email } from "../common/inferfaces/email.interface"
 
 export class LoginVerificationEmail implements Email {
 	constructor(private readonly token: string) { }

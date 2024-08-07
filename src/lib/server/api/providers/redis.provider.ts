@@ -1,14 +1,11 @@
 import { container } from 'tsyringe';
+import { env } from '../configs/envs.config';
 import RedisClient from 'ioredis'
-import { config } from '../common/config';
 
-// Symbol
 export const RedisProvider = Symbol('REDIS_TOKEN');
-
-// Type
 export type RedisProvider = RedisClient;
-
-// Register
 container.register<RedisProvider>(RedisProvider, {
-  useValue: new RedisClient(config.REDIS_URL)
+  useValue: new RedisClient(env.REDIS_URL, {
+    maxRetriesPerRequest: null
+  })
 });

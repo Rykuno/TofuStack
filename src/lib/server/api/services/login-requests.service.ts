@@ -1,13 +1,15 @@
 import { inject, injectable } from 'tsyringe';
-import { BadRequest } from '../common/errors';
-import { DatabaseProvider } from '../providers';
 import { MailerService } from './mailer.service';
 import { TokensService } from './tokens.service';
 import { LuciaProvider } from '../providers/lucia.provider';
 import { UsersRepository } from '../repositories/users.repository';
-import type { SignInEmailDto } from '../../../dtos/signin-email.dto';
-import type { RegisterEmailDto } from '../../../dtos/register-email.dto';
+import type { SignInEmailDto } from '../dtos/signin-email.dto';
+import type { RegisterEmailDto } from '../dtos/register-email.dto';
 import { LoginRequestsRepository } from '../repositories/login-requests.repository';
+import { LoginVerificationEmail } from '../emails/login-verification.email';
+import { DatabaseProvider } from '../providers/database.provider';
+import { BadRequest } from '../common/exceptions';
+import { WelcomeEmail } from '../emails/welcome.email';
 
 @injectable()
 export class LoginRequestsService {
@@ -26,10 +28,7 @@ export class LoginRequestsService {
     // save the login request to the database - ensuring we save the hashedToken
     await this.loginRequestsRepository.create({ email: data.email, hashedToken, expiresAt: expiry });
     // send the login request email
-    await this.mailerService.sendLoginRequest({
-      to: data.email,
-      props: { token: token }
-    });
+    await this.mailerService.send({ email: new LoginVerificationEmail(token), to: data.email });
   }
 
   async verify(data: SignInEmailDto) {
@@ -48,8 +47,8 @@ export class LoginRequestsService {
 
   // Create a new user and send a welcome email - or other onboarding process
   private async handleNewUserRegistration(email: string) {
-    const newUser = await this.usersRepository.create({ email, verified: true, avatar: null })
-    this.mailerService.sendWelcome({ to: email, props: null });
+    const newUser = await this.usersRepository.create({ email, verified: true })
+    await this.mailerService.send({ email: new WelcomeEmail(), to: newUser.email });
     // TODO: add whatever onboarding process or extra data you need here
     return newUser
   }
