@@ -1,8 +1,6 @@
-import nodemailer from 'nodemailer';
 import { injectable } from 'tsyringe';
-import type { Email } from '../interfaces/email.interface';
-import { config } from '../common/config';
-
+import { env } from '../configs/envs.config';
+import type { Email } from '../common/inferfaces/email.interface';
 
 type SendProps = {
 	to: string | string[];
@@ -11,34 +9,35 @@ type SendProps = {
 
 @injectable()
 export class MailerService {
+
+	async send(data: SendProps) {
+		const mailer = env.isProduction ? this.sendProd : this.sendDev;
+		await mailer(data);
+	}
+
 	private async sendDev({ to, email }: SendProps) {
-		const message = await nodemailer.createTransport({
-			host: 'smtp.ethereal.email',
-			port: 587,
-			secure: false, // Use `true` for port 465, `false` for all other ports
-			auth: {
-				user: 'adella.hoppe@ethereal.email',
-				pass: 'dshNQZYhATsdJ3ENke'
-			}
-		}).sendMail({
-			from: '"Example" <example@ethereal.email>',
-			bcc: to,
-			subject: email.subject(),
-			text: email.html(),
-			html: email.html()
-		});
-		console.log(nodemailer.getTestMessageUrl(message));
+		const options = {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				Attachments: [],
+				From: { Email: "noreply@tofustack.com", Name: "TofuStack" },
+				HTML: email.html(),
+				Subject: email.subject(),
+				Text: email.html(),
+				To: Array.isArray(to) ? to.map(to => ({ Email: to, Name: to })) : [{ Email: to, Name: to }],
+			})
+		};
+
+		const response = await fetch('http://localhost:8025/api/v1/send', options)
+		const data = await response.json()
+		console.log(`http://localhost:8025/view/${data.ID}`)
 	}
 
 	private async sendProd({ to, email }: SendProps) {
 		// CONFIGURE MAILER
 	}
 
-	async send({ to, email }: SendProps) {
-		if (config.isProduction) {
-			await this.sendProd({ to, email });
-		} else {
-			await this.sendDev({ to, email });
-		}
-	}
 }

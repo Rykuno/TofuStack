@@ -1,45 +1,41 @@
 import 'reflect-metadata';
-import './providers';
 import { Hono } from 'hono';
 import { hc } from 'hono/client';
 import { container } from 'tsyringe';
-import { validateAuthSession, verifyOrigin } from './middleware/auth.middleware';
 import { IamController } from './controllers/iam.controller';
-import { config } from './common/config';
+import { env } from './configs/envs.config';
+import { validateAuthSession, verifyOrigin } from './middlewares/auth.middleware';
+import { AuthCleanupJobs } from './jobs/auth-cleanup.job';
 
 /* -------------------------------------------------------------------------- */
-/*                               Client Request                               */
-/* ------------------------------------ ▲ ----------------------------------- */
-/* ------------------------------------ | ----------------------------------- */
-/* ------------------------------------ ▼ ----------------------------------- */
-/*                                 Controller                                 */
-/* ---------------------------- (Request Routing) --------------------------- */
-/* ------------------------------------ ▲ ----------------------------------- */
-/* ------------------------------------ | ----------------------------------- */
-/* ------------------------------------ ▼ ----------------------------------- */
-/*                                   Service                                  */
-/* ---------------------------- (Business logic) ---------------------------- */
-/* ------------------------------------ ▲ ----------------------------------- */
-/* ------------------------------------ | ----------------------------------- */
-/* ------------------------------------ ▼ ----------------------------------- */
-/*                                 Repository                                 */
-/* ----------------------------- (Data storage) ----------------------------- */
+/*                                     App                                    */
 /* -------------------------------------------------------------------------- */
+export const app = new Hono().basePath('/api');
 
-/* ----------------------------------- Api ---------------------------------- */
-const app = new Hono().basePath('/api');
-
-/* --------------------------- Global Middlewares --------------------------- */
+/* -------------------------------------------------------------------------- */
+/*                             Global Middlewares                             */
+/* -------------------------------------------------------------------------- */
 app.use(verifyOrigin).use(validateAuthSession);
 
-/* --------------------------------- Routes --------------------------------- */
+/* -------------------------------------------------------------------------- */
+/*                                   Routes                                   */
+/* -------------------------------------------------------------------------- */
 const routes = app
 	.route('/iam', container.resolve(IamController).routes())
 
 /* -------------------------------------------------------------------------- */
+/*                                  Cron Jobs                                 */
+/* -------------------------------------------------------------------------- */
+container.resolve(AuthCleanupJobs).deleteStaleEmailVerificationRequests();
+container.resolve(AuthCleanupJobs).deleteStaleLoginRequests();
+
+/* -------------------------------------------------------------------------- */
 /*                                   Exports                                  */
 /* -------------------------------------------------------------------------- */
-export const rpc = hc<typeof routes>(config.ORIGIN);
+const rpc = hc<typeof routes>(env.ORIGIN);
 export type ApiClient = typeof rpc;
 export type ApiRoutes = typeof routes;
-export { app };
+
+
+
+

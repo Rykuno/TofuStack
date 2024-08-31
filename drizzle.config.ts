@@ -1,8 +1,8 @@
 import type { Config } from 'drizzle-kit';
 
 export default {
-	out: './src/lib/server/api/infrastructure/database/migrations',
-	schema: './src/lib/server/api/infrastructure/database/tables/*.table.ts',
+	out: './src/lib/server/api/databases/migrations',
+	schema: './src/lib/server/api/databases/tables/*.table.ts',
 	breakpoints: false,
 	strict: true,
 	dialect: 'postgresql',

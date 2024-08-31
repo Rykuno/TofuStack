@@ -1,9 +1,10 @@
 import { inject, injectable } from "tsyringe";
-import { DatabaseProvider } from "../providers";
 import { and, eq, gte, lte, type InferInsertModel } from "drizzle-orm";
-import type { Repository } from "../interfaces/repository.interface";
-import { takeFirst, takeFirstOrThrow } from "../infrastructure/database/utils";
-import { emailVerificationsTable } from "../infrastructure/database/tables/email-verifications.table";
+import { emailVerificationsTable } from "../databases/tables";
+import type { Repository } from "../common/inferfaces/repository.interface";
+import { DatabaseProvider } from "../providers/database.provider";
+import { takeFirst, takeFirstOrThrow } from "../common/utils/repository.utils";
+
 
 export type CreateEmailVerification = Pick<InferInsertModel<typeof emailVerificationsTable>, 'requestedEmail' | 'hashedToken' | 'userId' | 'expiresAt'>;
 

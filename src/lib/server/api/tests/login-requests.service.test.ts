@@ -4,10 +4,11 @@ import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import { TokensService } from '../services/tokens.service';
 import { MailerService } from '../services/mailer.service';
 import { UsersRepository } from '../repositories/users.repository';
-import { DatabaseProvider, LuciaProvider } from '../providers';
 import { LoginRequestsRepository } from '../repositories/login-requests.repository';
 import { PgDatabase } from 'drizzle-orm/pg-core';
 import { container } from 'tsyringe';
+import { LuciaProvider } from '../providers/lucia.provider';
+import { DatabaseProvider } from '../providers/database.provider';
 
 describe('LoginRequestService', () => {
   let service: LoginRequestsService;
@@ -29,7 +30,6 @@ describe('LoginRequestService', () => {
       .resolve(LoginRequestsService);
   });
 
-
   afterAll(() => {
     vi.resetAllMocks()
   })
@@ -50,9 +50,9 @@ describe('LoginRequestService', () => {
       updatedAt: new Date()
     } satisfies Awaited<ReturnType<typeof loginRequestsRepository.create>>)
 
-    mailerService.sendLoginRequest = vi.fn().mockResolvedValue(null)
+    mailerService.send = vi.fn().mockResolvedValue(null)
 
-    const spy_mailerService_sendLoginRequest = vi.spyOn(mailerService, 'sendLoginRequest')
+    const spy_mailerService_sendLoginRequest = vi.spyOn(mailerService, 'send')
     const spy_tokensService_generateTokenWithExpiryAndHash = vi.spyOn(tokensService, 'generateTokenWithExpiryAndHash')
     const spy_loginRequestsRepository_create = vi.spyOn(loginRequestsRepository, 'create')
 

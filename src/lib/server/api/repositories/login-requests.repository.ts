@@ -1,9 +1,10 @@
 import { inject, injectable } from "tsyringe";
-import { DatabaseProvider } from "../providers";
-import type { Repository } from "../interfaces/repository.interface";
 import { and, eq, gte, type InferInsertModel } from "drizzle-orm";
-import { takeFirst, takeFirstOrThrow } from "../infrastructure/database/utils";
-import { loginRequestsTable } from "../infrastructure/database/tables/login-requests.table";
+import { loginRequestsTable } from "../databases/tables";
+import type { Repository } from "../common/inferfaces/repository.interface";
+import { DatabaseProvider } from "../providers/database.provider";
+import { takeFirst, takeFirstOrThrow } from "../common/utils/repository.utils";
+
 
 export type CreateLoginRequest = Pick<InferInsertModel<typeof loginRequestsTable>, 'email' | 'expiresAt' | 'hashedToken'>;
 

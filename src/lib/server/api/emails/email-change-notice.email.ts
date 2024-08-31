@@ -1,4 +1,4 @@
-import type { Email } from "../interfaces/email.interface";
+import type { Email } from "../common/inferfaces/email.interface"
 
 export class EmailChangeNoticeEmail implements Email {
 	constructor() { }
