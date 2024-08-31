@@ -1,9 +1,9 @@
 import { fail, redirect } from '@sveltejs/kit';
 import { zod } from 'sveltekit-superforms/adapters';
-import { signInEmailDto } from '$lib/dtos/signin-email.dto.js';
-import { setError, superValidate } from 'sveltekit-superforms';
-import { registerEmailDto } from '$lib/dtos/register-email.dto.js';
 import { StatusCodes } from '$lib/constants/status-codes';
+import { registerEmailDto } from '$lib/dtos/register-email.dto';
+import { signInEmailDto } from '$lib/dtos/signin-email.dto';
+import { setError, superValidate } from 'sveltekit-superforms';
 
 export const load = async () => {
 	return {

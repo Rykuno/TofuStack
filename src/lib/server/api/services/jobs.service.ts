@@ -4,8 +4,7 @@ import { RedisProvider } from "../providers/redis.provider";
 
 @injectable()
 export class JobsService {
-  constructor(@inject(RedisProvider) private readonly redis: RedisProvider) {
-  }
+  constructor(@inject(RedisProvider) private readonly redis: RedisProvider) { }
 
   createQueue(name: string) {
     return new Queue(name, { connection: this.redis })

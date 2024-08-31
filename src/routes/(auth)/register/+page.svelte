@@ -1,36 +1,15 @@
-<!-- <script>
-	import { enhance } from '$app/forms';
-</script>
-
-<h3>Register</h3>
-<form action="?/register" method="POST" use:enhance>
-	<label for="email">Email</label>
-	<input name="email" type="email" />
-	<button type="submit">Register</button>
-</form>
-
-<h3>Verify</h3>
-<form action="?/signin" method="POST" use:enhance>
-	<label for="email">Email</label>
-	<input name="email" type="email" />
-	<label for="token">Token</label>
-	<input name="token" type="text" />
-	<button type="submit">Login</button>
-</form> -->
-
 <script lang="ts">
-  import { Button } from "$lib/components/ui/button/index.js";
-  import * as Card from "$lib/components/ui/card/index.js";
-  import { Input } from "$lib/components/ui/input/index.js";
-  import { Label } from "$lib/components/ui/label/index.js";
+	import { Button } from '$lib/components/ui/button/index.js';
+	import * as Card from '$lib/components/ui/card/index.js';
+	import { Input } from '$lib/components/ui/input/index.js';
 	import { superForm } from 'sveltekit-superforms';
 	import * as Form from '$lib/components/ui/form';
 	import { zodClient } from 'sveltekit-superforms/adapters';
-	import { registerEmailDto } from "$lib/dtos/register-email.dto.js";
-	import { signInEmailDto } from "$lib/dtos/signin-email.dto.js";
-  import PinInput  from "$lib/components/pin-input.svelte";
+	import { registerEmailDto } from '$lib/dtos/register-email.dto.js';
+	import { signInEmailDto } from '$lib/dtos/signin-email.dto.js';
+	import PinInput from '$lib/components/pin-input.svelte';
 
-	const {data} = $props();
+	const { data } = $props();
 
 	let showTokenVerification = $state(false);
 
@@ -52,7 +31,6 @@
 
 	const { form: emailRegisterFormData, enhance: emailRegisterEnhance } = emailRegisterForm;
 	const { form: emailSigninFormData, enhance: emailSigninEnhance } = emailSigninForm;
-
 </script>
 
 <Card.Root class="mx-auto mt-24 max-w-sm">

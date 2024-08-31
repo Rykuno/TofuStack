@@ -1,15 +1,15 @@
 import { inject, injectable } from "tsyringe";
 import { JobsService } from "../services/jobs.service";
 
+// Example on how to create a job that runs once a week at midnight on Sunday
+
 @injectable()
 export class AuthCleanupJobs {
   private queue;
 
-  constructor(
-    @inject(JobsService) private jobsService: JobsService,
-  ) {
+  constructor(@inject(JobsService) private jobsService: JobsService) {
     /* ------------------------------ Create Queue ------------------------------ */
-    this.queue = this.jobsService.createQueue('test')
+    this.queue = this.jobsService.createQueue('auth_cleanup')
 
     /* ---------------------------- Register Workers ---------------------------- */
     this.worker();

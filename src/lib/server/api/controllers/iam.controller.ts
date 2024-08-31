@@ -4,13 +4,13 @@ import { inject, injectable } from 'tsyringe';
 import { zValidator } from '@hono/zod-validator';
 import { IamService } from '../services/iam.service';
 import { LuciaProvider } from '../providers/lucia.provider';
-import { signInEmailDto } from '../../../dtos/signin-email.dto';
-import { updateEmailDto } from '../../../dtos/update-email.dto';
-import { verifyEmailDto } from '../../../dtos/verify-email.dto';
-import { registerEmailDto } from '../../../dtos/register-email.dto';
 import { limiter } from '../middlewares/rate-limiter.middlware';
 import { requireAuth } from '../middlewares/auth.middleware';
 import { Controler } from '../common/classes/controller.class';
+import { registerEmailDto } from '$lib/dtos/register-email.dto';
+import { signInEmailDto } from '$lib/dtos/signin-email.dto';
+import { updateEmailDto } from '$lib/dtos/update-email.dto';
+import { verifyEmailDto } from '$lib/dtos/verify-email.dto';
 
 @injectable()
 export class IamController extends Controler  {
