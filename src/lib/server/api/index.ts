@@ -5,36 +5,37 @@ import { container } from 'tsyringe';
 import { IamController } from './controllers/iam.controller';
 import { env } from './configs/envs.config';
 import { validateAuthSession, verifyOrigin } from './middlewares/auth.middleware';
-// import { TestJob } from './jobs/test.job';
-import { glob, globSync } from 'glob';
-import path from 'path';
+import { AuthCleanupJobs } from './jobs/auth-cleanup.job';
 
-console.log('API SERVER STARTED');
-/* ----------------------------------- Api ---------------------------------- */
-const app = new Hono().basePath('/api');
+/* -------------------------------------------------------------------------- */
+/*                                     App                                    */
+/* -------------------------------------------------------------------------- */
+export const app = new Hono().basePath('/api');
 
-/* --------------------------- Global Middlewares --------------------------- */
+/* -------------------------------------------------------------------------- */
+/*                             Global Middlewares                             */
+/* -------------------------------------------------------------------------- */
 app.use(verifyOrigin).use(validateAuthSession);
 
-/* --------------------------------- Routes --------------------------------- */
+/* -------------------------------------------------------------------------- */
+/*                                   Routes                                   */
+/* -------------------------------------------------------------------------- */
 const routes = app
 	.route('/iam', container.resolve(IamController).routes())
 
 /* -------------------------------------------------------------------------- */
+/*                                  Cron Jobs                                 */
+/* -------------------------------------------------------------------------- */
+container.resolve(AuthCleanupJobs).deleteStaleEmailVerificationRequests();
+container.resolve(AuthCleanupJobs).deleteStaleLoginRequests();
+
+/* -------------------------------------------------------------------------- */
 /*                                   Exports                                  */
 /* -------------------------------------------------------------------------- */
-export const rpc = hc<typeof routes>(env.ORIGIN);
+const rpc = hc<typeof routes>(env.ORIGIN);
 export type ApiClient = typeof rpc;
 export type ApiRoutes = typeof routes;
-export { app };
 
-async function resolveJobs() {
-	const jobFiles = globSync('**/*.job.*');
 
-	for (const file of jobFiles) {
-		const module = await import(path.resolve(file));
-		container.resolve(module.default)
-	}
-}
 
-resolveJobs();
+

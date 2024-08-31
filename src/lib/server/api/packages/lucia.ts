@@ -1,4 +1,3 @@
-import { container } from 'tsyringe';
 import { Lucia } from 'lucia';
 import { DrizzlePostgreSQLAdapter } from '@lucia-auth/adapter-drizzle';
 import { sessionsTable, usersTable } from '../databases/tables';

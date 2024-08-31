@@ -1,4 +1,4 @@
-import { Hono } from 'hono';
+import { Hono, type Schema } from 'hono';
 import { setCookie } from 'hono/cookie';
 import { inject, injectable } from 'tsyringe';
 import { zValidator } from '@hono/zod-validator';
@@ -8,19 +8,18 @@ import { signInEmailDto } from '../../../dtos/signin-email.dto';
 import { updateEmailDto } from '../../../dtos/update-email.dto';
 import { verifyEmailDto } from '../../../dtos/verify-email.dto';
 import { registerEmailDto } from '../../../dtos/register-email.dto';
-import type { HonoTypes } from '../common/types/hono.type';
-import type { Controller } from '../common/inferfaces/controller.interface';
 import { limiter } from '../middlewares/rate-limiter.middlware';
 import { requireAuth } from '../middlewares/auth.middleware';
+import { Controler } from '../common/classes/controller.class';
 
 @injectable()
-export class IamController implements Controller {
-	private controller = new Hono<HonoTypes>();
-
+export class IamController extends Controler  {
 	constructor(
 		@inject(IamService) private iamService: IamService,
 		@inject(LuciaProvider) private lucia: LuciaProvider,
-	) { }
+	) {
+		super();
+	}
 
 	routes() {
 		return this.controller
