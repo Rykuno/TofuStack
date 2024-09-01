@@ -5,16 +5,15 @@
 	import { superForm } from 'sveltekit-superforms';
 	import * as Form from '$lib/components/ui/form';
 	import { zodClient } from 'sveltekit-superforms/adapters';
-	import { registerEmailDto } from '$lib/dtos/register-email.dto.js';
-	import { signInEmailDto } from '$lib/dtos/signin-email.dto.js';
 	import PinInput from '$lib/components/pin-input.svelte';
+	import { registerFormSchema, signInFormSchema } from './schemas.js';
 
 	const { data } = $props();
 
 	let showTokenVerification = $state(false);
 
 	const emailRegisterForm = superForm(data.emailRegisterForm, {
-		validators: zodClient(registerEmailDto),
+		validators: zodClient(registerFormSchema),
 		resetForm: false,
 		onUpdated: ({ form }) => {
 			if (form.valid) {
@@ -25,7 +24,7 @@
 	});
 
 	const emailSigninForm = superForm(data.emailSigninForm, {
-		validators: zodClient(signInEmailDto),
+		validators: zodClient(signInFormSchema),
 		resetForm: false
 	});
 

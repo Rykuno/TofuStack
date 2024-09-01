@@ -7,10 +7,10 @@ import { LuciaProvider } from '../providers/lucia.provider';
 import { limiter } from '../middlewares/rate-limiter.middlware';
 import { requireAuth } from '../middlewares/auth.middleware';
 import { Controler } from '../common/classes/controller.class';
-import { registerEmailDto } from '$lib/dtos/register-email.dto';
-import { signInEmailDto } from '$lib/dtos/signin-email.dto';
-import { updateEmailDto } from '$lib/dtos/update-email.dto';
-import { verifyEmailDto } from '$lib/dtos/verify-email.dto';
+import { registerEmailDto } from '$lib/server/api/dtos/register-email.dto';
+import { signInEmailDto } from '$lib/server/api/dtos/signin-email.dto';
+import { updateEmailDto } from '$lib/server/api/dtos/update-email.dto';
+import { verifyEmailDto } from '$lib/server/api/dtos/verify-email.dto';
 
 @injectable()
 export class IamController extends Controler  {
