@@ -4,8 +4,7 @@ import { loginRequestsTable } from "../databases/postgres/tables";
 import { takeFirst, takeFirstOrThrow } from "../common/utils/repository";
 import { DrizzleService } from "../services/drizzle.service";
 
-
-export type CreateLoginRequest = Pick<InferInsertModel<typeof loginRequestsTable>, 'email' | 'expiresAt' | 'hashedToken'>;
+type Create = Pick<InferInsertModel<typeof loginRequestsTable>, 'email' | 'expiresAt' | 'hashedToken'>;
 
 @injectable()
 export class LoginRequestsRepository {
@@ -13,7 +12,7 @@ export class LoginRequestsRepository {
     @inject(DrizzleService) private readonly drizzle: DrizzleService,
   ) { }
 
-  async create(data: CreateLoginRequest, db = this.drizzle.db) {
+  async create(data: Create, db = this.drizzle.db) {
     return db.insert(loginRequestsTable).values(data).onConflictDoUpdate({
       target: loginRequestsTable.email,
       set: data

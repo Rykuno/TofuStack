@@ -1,5 +1,5 @@
 import * as envs from '$env/static/private';
-import type { Config } from './types/config.type';
+import type { Config } from './types/config';
 
 export const config: Config = {
   isProduction: envs.NODE_ENV === 'production',

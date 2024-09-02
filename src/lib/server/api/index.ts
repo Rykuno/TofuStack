@@ -3,7 +3,7 @@ import { Hono } from 'hono';
 import { hc } from 'hono/client';
 import { container } from 'tsyringe';
 import { IamController } from './controllers/iam.controller';
-import { config, env } from './common/config';
+import { config } from './common/config';
 import { validateAuthSession, verifyOrigin } from './middlewares/auth.middleware';
 import { AuthCleanupJobs } from './jobs/auth-cleanup.job';
 

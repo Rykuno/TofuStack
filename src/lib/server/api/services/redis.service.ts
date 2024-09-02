@@ -1,7 +1,7 @@
 import { createClient, type RedisClientType } from "redis";
 import { injectable, type Disposable } from "tsyringe";
 import { config } from "../common/config";
-import type { AsyncService } from "../common/inferfaces/async-service.interface";
+import type { AsyncService } from "../common/types/async-service";
 
 @injectable()
 export class RedisService implements Disposable, AsyncService {

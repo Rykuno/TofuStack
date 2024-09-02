@@ -4,14 +4,14 @@ import { emailVerificationsTable } from "../databases/postgres/tables";
 import { takeFirst, takeFirstOrThrow } from "../common/utils/repository";
 import { DrizzleService } from "../services/drizzle.service";
 
-export type CreateEmailVerification = Pick<InferInsertModel<typeof emailVerificationsTable>, 'requestedEmail' | 'hashedToken' | 'userId' | 'expiresAt'>;
+type Create = Pick<InferInsertModel<typeof emailVerificationsTable>, 'requestedEmail' | 'hashedToken' | 'userId' | 'expiresAt'>;
 
 @injectable()
 export class EmailVerificationsRepository {
   constructor(@inject(DrizzleService) private readonly drizzle: DrizzleService) { }
 
   // creates a new email verification record or updates an existing one
-  async create(data: CreateEmailVerification) {
+  async create(data: Create) {
     return this.drizzle.db.insert(emailVerificationsTable).values(data).onConflictDoUpdate({
       target: emailVerificationsTable.userId,
       set: data

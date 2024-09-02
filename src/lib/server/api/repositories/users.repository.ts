@@ -2,11 +2,10 @@ import { inject, injectable } from 'tsyringe';
 import { usersTable } from '../databases/postgres/tables';
 import { eq, type InferInsertModel } from 'drizzle-orm';
 import { takeFirstOrThrow } from '../common/utils/repository';
-import type { Repository } from '../common/inferfaces/repository.interface';
 import { DrizzleService } from '../services/drizzle.service';
 
-export type CreateUser = InferInsertModel<typeof usersTable>;
-export type UpdateUser = Partial<CreateUser>;
+export type Create = InferInsertModel<typeof usersTable>;
+export type Update = Partial<Create>;
 
 @injectable()
 export class UsersRepository {
@@ -30,11 +29,11 @@ export class UsersRepository {
 		});
 	}
 
-	async create(data: CreateUser, db = this.drizzle.db) {
+	async create(data: Create, db = this.drizzle.db) {
 		return db.insert(usersTable).values(data).returning().then(takeFirstOrThrow);
 	}
 
-	async update(id: string, data: UpdateUser, db = this.drizzle.db) {
+	async update(id: string, data: Update, db = this.drizzle.db) {
 		return db
 			.update(usersTable)
 			.set(data)
