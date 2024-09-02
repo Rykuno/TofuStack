@@ -25,8 +25,9 @@ export function limiter({ limit, minutes, key = "" }: {
     }, // Method to generate custom identifiers for clients.
     // Redis store configuration
     store: new RedisStore({
-      sendCommand: (...args: string[]) => client.sendCommand(args),
-    }) as any,
+      // @ts-expect-error - Known issue: the `call` function is not present in @types/ioredis
+      sendCommand: (...args: string[]) => client.call(...args),
+    }) as any
   })
 }
 
