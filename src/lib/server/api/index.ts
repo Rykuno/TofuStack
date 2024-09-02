@@ -3,7 +3,7 @@ import { Hono } from 'hono';
 import { hc } from 'hono/client';
 import { container } from 'tsyringe';
 import { IamController } from './controllers/iam.controller';
-import { env } from './configs/envs.config';
+import { config, env } from './common/config';
 import { validateAuthSession, verifyOrigin } from './middlewares/auth.middleware';
 import { AuthCleanupJobs } from './jobs/auth-cleanup.job';
 
@@ -32,7 +32,7 @@ container.resolve(AuthCleanupJobs).deleteStaleLoginRequests();
 /* -------------------------------------------------------------------------- */
 /*                                   Exports                                  */
 /* -------------------------------------------------------------------------- */
-const rpc = hc<typeof routes>(env.ORIGIN);
+const rpc = hc<typeof routes>(config.api.origin);
 export type ApiClient = typeof rpc;
 export type ApiRoutes = typeof routes;
 

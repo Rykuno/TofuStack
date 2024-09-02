@@ -1,17 +1,28 @@
-import { inject, injectable } from "tsyringe";
+import { injectable } from "tsyringe";
 import { Queue, Worker, type Processor } from 'bullmq';
-import { RedisProvider } from "../providers/redis.provider";
+import RedisClient from "ioredis";
+import { config } from "../common/config";
+
+// BullMQ utilizes ioredis, which is no longer maintained but still works fine.
+// I recommend using BullMQ with ioredis for now, but keep an eye out for future updates.
 
 @injectable()
 export class JobsService {
-  constructor(@inject(RedisProvider) private readonly redis: RedisProvider) {
-  }
+  constructor() { }
 
   createQueue(name: string) {
-    return new Queue(name, { connection: this.redis })
+    return new Queue(name, {
+      connection: new RedisClient(config.redis.url, {
+        maxRetriesPerRequest: null
+      })
+    })
   }
 
   createWorker(name: string, prcoessor: Processor) {
-    return new Worker(name, prcoessor, { connection: this.redis })
+    return new Worker(name, prcoessor, {
+      connection: new RedisClient(config.redis.url, {
+        maxRetriesPerRequest: null
+      })
+    })
   }
 }

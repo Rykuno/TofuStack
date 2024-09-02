@@ -1,23 +1,22 @@
 import 'reflect-metadata';
-import { LoginRequestsService } from '../services/login-requests.service';
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import { TokensService } from '../services/tokens.service';
 import { MailerService } from '../services/mailer.service';
 import { UsersRepository } from '../repositories/users.repository';
 import { LoginRequestsRepository } from '../repositories/login-requests.repository';
-import { PgDatabase } from 'drizzle-orm/pg-core';
 import { container } from 'tsyringe';
-import { LuciaProvider } from '../providers/lucia.provider';
-import { DatabaseProvider } from '../providers/database.provider';
+import { LuciaService } from '../services/lucia.service';
+import { DrizzleService } from '../services/drizzle.service';
+import { IamService } from '../services/iam.service';
 
 describe('LoginRequestService', () => {
-  let service: LoginRequestsService;
+  let service: IamService;
   let tokensService = vi.mocked(TokensService.prototype)
   let mailerService = vi.mocked(MailerService.prototype);
   let usersRepository = vi.mocked(UsersRepository.prototype);
   let loginRequestsRepository = vi.mocked(LoginRequestsRepository.prototype);
-  let luciaProvider = vi.mocked(LuciaProvider);
-  let databaseProvider = vi.mocked(PgDatabase);
+  let luciaService = vi.mocked(LuciaService.prototype);
+  let drizzleService = vi.mocked(DrizzleService.prototype);
 
   beforeAll(() => {
     service = container
@@ -25,9 +24,9 @@ describe('LoginRequestService', () => {
       .register<MailerService>(MailerService, { useValue: mailerService })
       .register<UsersRepository>(UsersRepository, { useValue: usersRepository })
       .register(LoginRequestsRepository, { useValue: loginRequestsRepository })
-      .register(LuciaProvider, { useValue: luciaProvider })
-      .register(DatabaseProvider, { useValue: databaseProvider })
-      .resolve(LoginRequestsService);
+      .register(LuciaService, { useValue: luciaService })
+      .register(DrizzleService, { useValue: drizzleService })
+      .resolve(IamService);
   });
 
   afterAll(() => {
@@ -57,7 +56,7 @@ describe('LoginRequestService', () => {
     const spy_loginRequestsRepository_create = vi.spyOn(loginRequestsRepository, 'create')
 
     it('should resolve', async () => {
-      await expect(service.create({ email: "test" })).resolves.toBeUndefined()
+      await expect(service.createLoginRequest({ email: "test" })).resolves.toBeUndefined()
     })
     it('should generate a token with expiry and hash', async () => {
       expect(spy_tokensService_generateTokenWithExpiryAndHash).toBeCalledTimes(1)

@@ -1,17 +1,28 @@
-import { PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
+import { PutObjectCommand, DeleteObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { createId } from '@paralleldrive/cuid2';
-import { inject, injectable } from 'tsyringe';
-import { env } from '../configs/envs.config';
-import { S3ClientProvider } from '../providers/s3.provider';
+import { injectable } from 'tsyringe';
+import { config } from '../common/config';
 
 @injectable()
 export class StorageService {
-  constructor(@inject(S3ClientProvider) private readonly s3Client: S3ClientProvider) { }
+  protected readonly s3Client: S3Client
+
+  constructor() {
+    this.s3Client = new S3Client({
+      region: 'auto',
+      endpoint: config.storage.url,
+      credentials: {
+        accessKeyId: config.storage.accessKey,
+        secretAccessKey: config.storage.secretKey
+      },
+      forcePathStyle: true
+    })
+  }
 
   async upload(file: File) {
     const key = createId();
     const uploadCommand = new PutObjectCommand({
-      Bucket: env.STORAGE_BUCKET_NAME,
+      Bucket: config.storage.bucket,
       ACL: 'public-read',
       Key: key,
       ContentType: file.type,
@@ -24,7 +35,7 @@ export class StorageService {
 
   delete(key: string) {
     const deleteCommand = new DeleteObjectCommand({
-      Bucket: env.STORAGE_BUCKET_NAME,
+      Bucket: config.storage.bucket,
       Key: key
     });
 

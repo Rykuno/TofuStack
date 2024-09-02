@@ -1,23 +1,23 @@
 import { inject, injectable } from 'tsyringe';
 import { MailerService } from './mailer.service';
 import { TokensService } from './tokens.service';
-import { LuciaProvider } from '../providers/lucia.provider';
 import { UsersRepository } from '../repositories/users.repository';
 import type { SignInEmailDto } from '../dtos/signin-email.dto';
 import type { RegisterEmailDto } from '../dtos/register-email.dto';
 import { LoginRequestsRepository } from '../repositories/login-requests.repository';
 import { LoginVerificationEmail } from '../emails/login-verification.email';
-import { DatabaseProvider } from '../providers/database.provider';
 import { BadRequest } from '../common/exceptions';
 import { WelcomeEmail } from '../emails/welcome.email';
 import { EmailVerificationsRepository } from '../repositories/email-verifications.repository';
 import { EmailChangeNoticeEmail } from '../emails/email-change-notice.email';
+import { DrizzleService } from './drizzle.service';
+import { LuciaService } from './lucia.service';
 
 @injectable()
 export class IamService {
 	constructor(
-		@inject(LuciaProvider) private readonly lucia: LuciaProvider,
-		@inject(DatabaseProvider) private readonly db: DatabaseProvider,
+		@inject(LuciaService) private readonly luciaService: LuciaService,
+		@inject(DrizzleService) private readonly drizzleService: DrizzleService,
 		@inject(TokensService) private readonly tokensService: TokensService,
 		@inject(MailerService) private readonly mailerService: MailerService,
 		@inject(UsersRepository) private readonly usersRepository: UsersRepository,
@@ -42,10 +42,10 @@ export class IamService {
 
 		if (!existingUser) {
 			const newUser = await this.handleNewUserRegistration(data.email);
-			return this.lucia.createSession(newUser.id, {});
+			return this.luciaService.lucia.createSession(newUser.id, {});
 		}
 
-		return this.lucia.createSession(existingUser.id, {});
+		return this.luciaService.lucia.createSession(existingUser.id, {});
 	}
 
 	// These steps follow the process outlined in OWASP's "Changing A User's Email Address" guide.
@@ -80,7 +80,7 @@ export class IamService {
 	}
 
 	async logout(sessionId: string) {
-		return this.lucia.invalidateSession(sessionId);
+		return this.luciaService.lucia.invalidateSession(sessionId);
 	}
 
 	// Create a new user and send a welcome email - or other onboarding process
@@ -93,9 +93,9 @@ export class IamService {
 
 	// Fetch a valid request from the database, verify the token and burn the request if it is valid
 	private async getValidLoginRequest(email: string, token: string) {
-		return await this.db.transaction(async (trx) => {
+		return await this.drizzleService.db.transaction(async (trx) => {
 			// fetch the login request
-			const loginRequest = await this.loginRequestsRepository.trxHost(trx).findOneByEmail(email)
+			const loginRequest = await this.loginRequestsRepository.findOneByEmail(email, trx)
 			if (!loginRequest) return null;
 
 			// check if the token is valid
@@ -103,15 +103,15 @@ export class IamService {
 			if (!isValidRequest) return null
 
 			// if the token is valid, burn the request
-			await this.loginRequestsRepository.trxHost(trx).deleteById(loginRequest.id);
+			await this.loginRequestsRepository.deleteById(loginRequest.id, trx);
 			return loginRequest
 		})
 	}
 
 	private async findAndBurnEmailVerificationToken(userId: string, token: string) {
-		return this.db.transaction(async (trx) => {
+		return this.drizzleService.db.transaction(async (trx) => {
 			// find a valid record
-			const emailVerificationRecord = await this.emailVerificationsRepository.trxHost(trx).findValidRecord(userId);
+			const emailVerificationRecord = await this.emailVerificationsRepository.findValidRecord(userId, trx);
 			if (!emailVerificationRecord) return null;
 
 			// check if the token is valid
@@ -119,7 +119,7 @@ export class IamService {
 			if (!isValidRecord) return null
 
 			// burn the token if it is valid
-			await this.emailVerificationsRepository.trxHost(trx).deleteById(emailVerificationRecord.id)
+			await this.emailVerificationsRepository.deleteById(emailVerificationRecord.id, trx)
 			return emailVerificationRecord
 		})
 	}

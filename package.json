@@ -87,6 +87,8 @@
 		"mode-watcher": "^0.4.1",
 		"paneforge": "^0.0.5",
 		"rate-limit-redis": "^4.2.0",
+		"redis": "^4.7.0",
+		"redis-om": "^0.4.6",
 		"resend": "^3.5.0",
 		"svelte-sonner": "^0.3.27",
 		"tailwind-merge": "^2.4.0",

@@ -1,4 +1,5 @@
 services:
+  # Web
   - type: web
     name: web
     runtime: node
@@ -9,6 +10,21 @@ services:
     startCommand: npm run db:migrate && node build/index.js
     healthCheckPath: /
     envVars:
+      - key: STORAGE_API_SECRET_KEY
+        fromService:
+          name: minio-server
+          type: web
+          property: MINIO_ROOT_PASSWORD
+      - key: STORAGE_ACCESS_KEY
+        fromService:
+          name: minio-server
+          type: web
+          property: MINIO_ROOT_USER
+      - key: STORAGE_API_URL
+        fromService:
+          name: minio-server
+          type: web
+          property: connectionString
       - key: DATABASE_URL
         fromDatabase:
           name: tofustack
@@ -23,9 +39,61 @@ services:
           name: web
           type: web
           property: host
+  # Redis
   - type: redis
     name: redis
     ipAllowList: [] # Only allow internal connections
+
+  # MinIO Server
+  - type: web
+    name: minio-server
+    healthCheckPath: /minio/health/liveweb
+    runtime: image
+    image:
+      url: docker.io/minio/minio:latest
+    dockerCommand: minio server /data --address $HOST:$PORT --console-address $HOST:$CONSOLE_PORT
+    # Use the following 'dockerCommand' if removing the 'minio-console'
+    # web service
+    # dockerCommand: minio server /data --address $HOST:$PORT
+    autoDeploy: false
+    disk:
+      name: data
+      mountPath: /data
+    envVars:
+    - key: MINIO_ROOT_USER
+      generateValue: true
+    - key: MINIO_ROOT_PASSWORD
+      generateValue: true
+    - key: HOST
+      value: "0.0.0.0"
+    - key: PORT
+      value: 9000
+    - key: CONSOLE_PORT
+      value: 9090
+    # Uncomment the following key/value pair if you are removing the
+    # 'minio-console' web service
+    # - key: MINIO_BROWSER
+    #   value: "off"
+  # MinIO Console
+  - type: web
+    name: minio-console
+    runtime: docker
+    dockerContext: /
+    dockerfilePath: ./Dockerfile.minio
+    autoDeploy: false
+    envVars:
+    - key: PORT
+      value: 10000
+    - key: MINIO_HOST
+      fromService:
+        name: minio-server
+        type: web
+        property: host
+    - key: MINIO_CONSOLE_PORT
+      fromService:
+        name: minio-server
+        type: web
+        envVarKey: CONSOLE_PORT
 
 databases:
   - name: db

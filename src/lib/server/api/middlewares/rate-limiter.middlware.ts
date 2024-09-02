@@ -1,11 +1,13 @@
 import { rateLimiter } from "hono-rate-limiter";
 import { RedisStore } from 'rate-limit-redis'
-import RedisClient from 'ioredis'
-import { env } from "../configs/envs.config";
-import type { HonoTypes } from "../common/types/hono.type";
+import type { HonoTypes } from "../common/types/hono";
+import { container } from "tsyringe";
+import { RedisService } from '../services/redis.service';
 
-const client = new RedisClient(env.REDIS_URL)
+// resolve dependencies from the container
+const { client } = container.resolve(RedisService);
 
+// Rate limiter middleware
 export function limiter({ limit, minutes, key = "" }: {
   limit: number;
   minutes: number;
@@ -23,8 +25,7 @@ export function limiter({ limit, minutes, key = "" }: {
     }, // Method to generate custom identifiers for clients.
     // Redis store configuration
     store: new RedisStore({
-      // @ts-expect-error - Known issue: the `call` function is not present in @types/ioredis
-      sendCommand: (...args: string[]) => client.call(...args),
+      sendCommand: (...args: string[]) => client.sendCommand(args),
     }) as any,
   })
 }
