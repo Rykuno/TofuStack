@@ -3,9 +3,14 @@ import { createMiddleware } from 'hono/factory';
 import { verifyRequestOrigin } from 'lucia';
 import type { Session, User } from 'lucia';
 import { Unauthorized } from '../common/exceptions';
-import type { HonoTypes } from '../common/types/hono.type';
-import { lucia } from '../packages/lucia';
+import type { HonoTypes } from '../common/types/hono';
+import { container } from 'tsyringe';
+import { LuciaService } from '../services/lucia.service';
 
+// resolve dependencies from the container
+const { lucia } = container.resolve(LuciaService)
+
+// Middleware to verify the origin of the request
 export const verifyOrigin: MiddlewareHandler<HonoTypes> = createMiddleware(async (c, next) => {
 	if (c.req.method === "GET") {
 		return next();

@@ -3,7 +3,7 @@ import { createId } from '@paralleldrive/cuid2';
 import { sessionsTable } from './sessions.table';
 import { boolean, pgTable, text } from 'drizzle-orm/pg-core';
 import { emailVerificationsTable } from './email-verifications.table';
-import { citext, cuid2, timestamps } from '../../common/utils/table.utils';
+import { citext, cuid2, timestamps } from '../../../common/utils/table';
 import { filesTable } from './files.table';
 
 

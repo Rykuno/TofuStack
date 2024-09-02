@@ -1,4 +1,4 @@
-import { cuid2 } from '../../common/utils/table.utils';
+import { cuid2 } from '../../../common/utils/table';
 import { usersTable } from './users.table';
 import { pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 

@@ -8,10 +8,10 @@ export class AuthCleanupJobs {
   private queue;
 
   constructor(@inject(JobsService) private jobsService: JobsService) {
-    /* ------------------------------ Create Queue ------------------------------ */
+    // create queue
     this.queue = this.jobsService.createQueue('auth_cleanup')
 
-    /* ---------------------------- Register Workers ---------------------------- */
+    // register workers
     this.worker();
   }
 

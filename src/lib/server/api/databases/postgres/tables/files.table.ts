@@ -1,5 +1,5 @@
 import { bigint, pgTable, text } from "drizzle-orm/pg-core";
-import { cuid2, timestamps } from "../../common/utils/table.utils";
+import { cuid2, timestamps } from "../../../common/utils/table";
 import { createId } from "@paralleldrive/cuid2";
 
 export const filesTable = pgTable('files', {

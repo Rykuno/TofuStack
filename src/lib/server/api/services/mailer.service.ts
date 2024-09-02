@@ -1,6 +1,6 @@
 import { injectable } from 'tsyringe';
-import { env } from '../configs/envs.config';
 import type { Email } from '../common/inferfaces/email.interface';
+import { config } from '../common/config';
 
 type SendProps = {
 	to: string | string[];
@@ -11,7 +11,7 @@ type SendProps = {
 export class MailerService {
 
 	async send(data: SendProps) {
-		const mailer = env.isProduction ? this.sendProd : this.sendDev;
+		const mailer = config.isProduction ? this.sendProd : this.sendDev;
 		await mailer(data);
 	}
 

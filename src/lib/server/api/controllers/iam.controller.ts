@@ -1,22 +1,21 @@
-import { Hono, type Schema } from 'hono';
 import { setCookie } from 'hono/cookie';
 import { inject, injectable } from 'tsyringe';
 import { zValidator } from '@hono/zod-validator';
 import { IamService } from '../services/iam.service';
-import { LuciaProvider } from '../providers/lucia.provider';
 import { limiter } from '../middlewares/rate-limiter.middlware';
 import { requireAuth } from '../middlewares/auth.middleware';
-import { Controler } from '../common/classes/controller.class';
+import { Controler } from '../common/types/controller';
 import { registerEmailDto } from '$lib/server/api/dtos/register-email.dto';
 import { signInEmailDto } from '$lib/server/api/dtos/signin-email.dto';
 import { updateEmailDto } from '$lib/server/api/dtos/update-email.dto';
 import { verifyEmailDto } from '$lib/server/api/dtos/verify-email.dto';
+import { LuciaService } from '../services/lucia.service';
 
 @injectable()
-export class IamController extends Controler  {
+export class IamController extends Controler {
 	constructor(
 		@inject(IamService) private iamService: IamService,
-		@inject(LuciaProvider) private lucia: LuciaProvider,
+		@inject(LuciaService) private luciaService: LuciaService,
 	) {
 		super();
 	}
@@ -35,7 +34,7 @@ export class IamController extends Controler  {
 			.post('/login/verify', zValidator('json', signInEmailDto), limiter({ limit: 10, minutes: 60 }), async (c) => {
 				const { email, token } = c.req.valid('json');
 				const session = await this.iamService.verifyLoginRequest({ email, token });
-				const sessionCookie = this.lucia.createSessionCookie(session.id);
+				const sessionCookie = this.luciaService.lucia.createSessionCookie(session.id);
 				setCookie(c, sessionCookie.name, sessionCookie.value, {
 					path: sessionCookie.attributes.path,
 					maxAge: sessionCookie.attributes.maxAge,
@@ -50,7 +49,7 @@ export class IamController extends Controler  {
 			.post('/logout', requireAuth, async (c) => {
 				const sessionId = c.var.session.id;
 				await this.iamService.logout(sessionId);
-				const sessionCookie = this.lucia.createBlankSessionCookie();
+				const sessionCookie = this.luciaService.lucia.createBlankSessionCookie();
 				setCookie(c, sessionCookie.name, sessionCookie.value, {
 					path: sessionCookie.attributes.path,
 					maxAge: sessionCookie.attributes.maxAge,

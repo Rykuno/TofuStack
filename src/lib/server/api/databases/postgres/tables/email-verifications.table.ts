@@ -2,7 +2,7 @@ import { createId } from '@paralleldrive/cuid2';
 import { pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 import { usersTable } from './users.table';
-import { timestamps } from '../../common/utils/table.utils';
+import { timestamps } from '../../../common/utils/table';
 
 export const emailVerificationsTable = pgTable('email_verifications', {
   id: text('id')

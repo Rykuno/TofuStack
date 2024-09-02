@@ -7,7 +7,7 @@ import { registerFormSchema, signInFormSchema } from './schemas';
 export const load = async () => {
 	return {
 		emailRegisterForm: await superValidate(zod(registerFormSchema)),
-		emailSigninForm: await superValidate(zod(signInFormSchema))
+		emailSigninForm: await superValidate({email: 'test'}, zod(signInFormSchema))
 	};
 };
 

@@ -1,6 +1,6 @@
 import { Hono } from "hono";
-import type { HonoTypes } from "../types/hono.type";
-import type { BlankSchema, Env, Schema } from "hono/types";
+import type { HonoTypes } from "./hono";
+import type { BlankSchema } from "hono/types";
 
 export abstract class Controler {
   protected readonly controller: Hono<HonoTypes, BlankSchema, '/'>;
