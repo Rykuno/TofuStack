@@ -12,7 +12,7 @@ import { DrizzleService } from './drizzle.service';
 import { LuciaService } from './lucia.service';
 
 @injectable()
-export class IamService {
+export class AuthenticationService {
 	constructor(
 		@inject(LuciaService) private readonly luciaService: LuciaService,
 		@inject(DrizzleService) private readonly drizzleService: DrizzleService,

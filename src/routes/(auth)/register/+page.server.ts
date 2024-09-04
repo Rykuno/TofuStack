@@ -15,7 +15,7 @@ export const actions = {
 	register: async ({ locals, request }) => {
 		const emailRegisterForm = await superValidate(request, zod(registerFormSchema));
 		if (!emailRegisterForm.valid) return fail(StatusCodes.BAD_REQUEST, { emailRegisterForm });
-		const { error } = await locals.api.iam.login.request.$post({ json: emailRegisterForm.data }).then(locals.parseApiResponse);
+		const { error } = await locals.api.iam.login.$post({ json: emailRegisterForm.data }).then(locals.parseApiResponse);
 		if (error) return setError(emailRegisterForm, 'email', error);
 		return { emailRegisterForm };
 	},

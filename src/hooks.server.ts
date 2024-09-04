@@ -18,13 +18,13 @@ const apiClient: Handle = async ({ event, resolve }) => {
 
 	/* ----------------------------- Auth functions ----------------------------- */
 	async function getAuthedUser() {
-		const { data } = await api.iam.user.$get().then(parseApiResponse)
+		const { data } = await api.users.me.$get().then(parseApiResponse)
 		return data && data.user;
 	}
 
-	async function getAuthedUserOrThrow() {
-		const { data } = await api.iam.user.$get().then(parseApiResponse);
-		if (!data || !data.user) throw redirect(StatusCodes.TEMPORARY_REDIRECT, '/');
+	async function getAuthedUserOrThrow(redirectTo = '/') {
+		const { data } = await api.users.me.$get().then(parseApiResponse);
+		if (!data || !data.user) throw redirect(StatusCodes.TEMPORARY_REDIRECT, redirectTo);
 		return data?.user;
 	}
 
