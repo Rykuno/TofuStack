@@ -60,16 +60,16 @@ services:
       name: data
       mountPath: /data
     envVars:
-    - key: MINIO_ROOT_USER
-      generateValue: true
-    - key: MINIO_ROOT_PASSWORD
-      generateValue: true
-    - key: HOST
-      value: "0.0.0.0"
-    - key: PORT
-      value: 9000
-    - key: CONSOLE_PORT
-      value: 9090
+      - key: MINIO_ROOT_USER
+        generateValue: true
+      - key: MINIO_ROOT_PASSWORD
+        generateValue: true
+      - key: HOST
+        value: "0.0.0.0"
+      - key: PORT
+        value: 9000
+      - key: CONSOLE_PORT
+        value: 9090
     # Uncomment the following key/value pair if you are removing the
     # 'minio-console' web service
     # - key: MINIO_BROWSER
@@ -82,18 +82,18 @@ services:
     dockerfilePath: ./Dockerfile.minio
     autoDeploy: false
     envVars:
-    - key: PORT
-      value: 10000
-    - key: MINIO_HOST
-      fromService:
-        name: minio-server
-        type: web
-        property: host
-    - key: MINIO_CONSOLE_PORT
-      fromService:
-        name: minio-server
-        type: web
-        envVarKey: CONSOLE_PORT
+      - key: PORT
+        value: 10000
+      - key: MINIO_HOST
+        fromService:
+          name: minio-server
+          type: web
+          property: host
+      - key: MINIO_CONSOLE_PORT
+        fromService:
+          name: minio-server
+          type: web
+          envVarKey: CONSOLE_PORT
 
 databases:
   - name: db
