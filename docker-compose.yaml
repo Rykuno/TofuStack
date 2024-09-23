@@ -2,6 +2,7 @@ version: '3.8'
 services:
   postgres:
     image: postgres:latest
+    container_name: tofu_postgres
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -12,12 +13,14 @@ services:
       - postgres_data:/data
   redis:
     image: redis:latest
+    container_name: tofu_redis
     ports:
       - '6379:6379'
     volumes:
       - redis_data:/data
   minio:
     image: docker.io/bitnami/minio
+    container_name: tofu_minio
     ports:
       - '9000:9000'
       - '9001:9001'
@@ -31,7 +34,7 @@ services:
       - MINIO_DEFAULT_BUCKETS=dev
   mailpit:
     image: axllent/mailpit
-    container_name: mailpit
+    container_name: tofu_mailpit
     volumes:
       - mailpit_data:/data
     ports:
