@@ -64,7 +64,7 @@ That being said, there are some libaries that embody my philosophies of building
 - [Lucia](https://lucia-auth.com): Hits the right level of abstraction for me. Hand me the tools to build a secure authentication system and let me implement it to suite my needs
 - [Drizzle](https://orm.drizzle.team/) - Drizzle advertises itself as an ORM but I think its deceptive. Its a query builder with a migration client. Everytime I've used an ORM, I find myself fighting it for sometimes the simplist of use cases. Drizzle just gives you type-safety while querying SQL in a native fashion. Learn SQL, not ORMs.
 - [Hono](https://hono.dev/): Fast, lightweight, and built on **web standards**; meaning it can run anywhere you're Sveltekit app can. It's essentially a better, newer, and ironically more stable Express.JS. This provides us an extreemely good foundation to cleanly build ontop of without having to teardown first. It has a zod adapter for validating DTO's which can be shared with the frontend too.
-- [Sveltekit](https://kit.svelte.dev/): After trying Vue, React, Next, and pretty much every frotnend framework in the JS ecosystem, its safe to say I vastly prefer Svelte and its priority of building on **web standards**.
+- [Sveltekit](https://kit.svelte.dev/): After trying Vue, React, Next, and pretty much every frontend framework in the JS ecosystem, its safe to say I vastly prefer Svelte and its priority of building on **web standards**.
 
 ## Architecture
 
