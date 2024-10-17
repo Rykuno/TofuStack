@@ -26,4 +26,5 @@ export const timestamps = {
   })
     .notNull()
     .defaultNow()
+    .$onUpdate(() => new Date())
 };
