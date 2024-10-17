@@ -17,7 +17,7 @@ export const actions = {
 	updateEmail: async ({ request, locals }) => {
 		const updateEmailForm = await superValidate(request, zod(updateEmailFormSchema));
 		if (!updateEmailForm.valid) return fail(StatusCodes.BAD_REQUEST, { updateEmailForm })
-		const { error } = await locals.api.iam.email.$patch({ json: updateEmailForm.data }).then(locals.parseApiResponse);
+		const { error } = await locals.api.auth.email.$patch({ json: updateEmailForm.data }).then(locals.parseApiResponse);
 		if (error) return setError(updateEmailForm, 'email', error);
 		return { updateEmailForm }
 	},
@@ -25,7 +25,7 @@ export const actions = {
 		const verifyEmailForm = await superValidate(request, zod(verifyEmailFormSchema));
 		console.log(verifyEmailForm)
 		if (!verifyEmailForm.valid) return fail(StatusCodes.BAD_REQUEST, { verifyEmailForm })
-		const { error } = await locals.api.iam.email.verification.$post({ json: verifyEmailForm.data }).then(locals.parseApiResponse);
+		const { error } = await locals.api.auth.email.verification.$post({ json: verifyEmailForm.data }).then(locals.parseApiResponse);
 		if (error) return setError(verifyEmailForm, 'token', error);
 		return { verifyEmailForm }
 	}
