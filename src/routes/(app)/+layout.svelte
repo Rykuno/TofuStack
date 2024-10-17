@@ -111,11 +111,11 @@
 		<DropdownMenu.Content align="end">
 			<DropdownMenu.Item href="/settings">Settings</DropdownMenu.Item>
 			<DropdownMenu.Separator />
-			<DropdownMenu.Item>
-				<form action="/?/logout" method="POST" use:enhance class="w-full">
-					<button class="w-full cursor-default text-start" type="submit">Logout</button>
-				</form></DropdownMenu.Item
-			>
+			<form action="/?/logout" method="POST" use:enhance class="w-full">
+				<button class="block w-full cursor-default text-start" tabindex="-1" type="submit">
+					<DropdownMenu.Item>Logout</DropdownMenu.Item>
+				</button>
+			</form>
 		</DropdownMenu.Content>
 	</DropdownMenu.Root>
 {/snippet}
