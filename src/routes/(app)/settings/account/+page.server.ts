@@ -23,9 +23,8 @@ export const actions = {
 	},
 	verifyEmail: async ({ request, locals }) => {
 		const verifyEmailForm = await superValidate(request, zod(verifyEmailFormSchema));
-		console.log(verifyEmailForm)
 		if (!verifyEmailForm.valid) return fail(StatusCodes.BAD_REQUEST, { verifyEmailForm })
-		const { error } = await locals.api.auth.email.verification.$post({ json: verifyEmailForm.data }).then(locals.parseApiResponse);
+		const { error } = await locals.api.auth.email.verify.$post({ json: verifyEmailForm.data }).then(locals.parseApiResponse);
 		if (error) return setError(verifyEmailForm, 'token', error);
 		return { verifyEmailForm }
 	}
