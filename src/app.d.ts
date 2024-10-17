@@ -12,7 +12,7 @@ declare global {
 			api: ApiClient['api'];
 			parseApiResponse: typeof parseApiResponse;
 			getAuthedUser: () => Promise<Returned<User> | null>;
-			getAuthedUserOrThrow: (redirectTo: string) => Promise<Returned<User>>;
+			getAuthedUserOrThrow: (redirectTo?: string) => Promise<Returned<User>>;
 		}
 
 		// interface PageData {}

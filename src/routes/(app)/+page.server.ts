@@ -8,7 +8,7 @@ export const load = async ({ locals }) => {
 
 export const actions = {
 	logout: async ({ locals }) => {
-		await locals.api.iam.logout.$post()
+		await locals.api.auth.logout.$post()
 		redirect(StatusCodes.SEE_OTHER, '/register')
 	}
 }

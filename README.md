@@ -92,7 +92,7 @@ to start with Technical and let the project naturally evolve into one of the oth
 
 ### File Naming
 
-You might notice how each file in the backend is postfixed with its architectural type(e.g. `iam.service.ts`). This allows
+You might notice how each file in the backend is postfixed with its architectural type(e.g. `authentication.service.ts`). This allows
 us to easily reorganize the folder structure to suite a different architecture pattern if the domain becomes more complex.
 
 For example, if you want to group folders by domain(DDD), you simply drag and drop all related files to that folder.

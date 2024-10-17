@@ -7,10 +7,10 @@ import { LoginRequestsRepository } from '../repositories/login-requests.reposito
 import { container } from 'tsyringe';
 import { LuciaService } from '../services/lucia.service';
 import { DrizzleService } from '../services/drizzle.service';
-import { IamService } from '../services/iam.service';
+import { AuthenticationService } from '../services/authentication.service';
 
 describe('LoginRequestService', () => {
-  let service: IamService;
+  let service: AuthenticationService;
   let tokensService = vi.mocked(TokensService.prototype)
   let mailerService = vi.mocked(MailerService.prototype);
   let usersRepository = vi.mocked(UsersRepository.prototype);
@@ -26,7 +26,7 @@ describe('LoginRequestService', () => {
       .register(LoginRequestsRepository, { useValue: loginRequestsRepository })
       .register(LuciaService, { useValue: luciaService })
       .register(DrizzleService, { useValue: drizzleService })
-      .resolve(IamService);
+      .resolve(AuthenticationService);
   });
 
   afterAll(() => {

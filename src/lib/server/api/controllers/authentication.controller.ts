@@ -13,7 +13,7 @@ import { loginDto } from '../dtos/login.dto';
 import { verifyLoginDto } from '../dtos/verify-login.dto';
 
 @injectable()
-export class IamController extends Controler {
+export class AuthenticationController extends Controler {
 	constructor(
 		@inject(AuthenticationService) private authenticationService: AuthenticationService,
 		@inject(EmailVerificationService) private emailVerificationService: EmailVerificationService,

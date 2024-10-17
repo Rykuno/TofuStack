@@ -73,8 +73,4 @@ export class AuthenticationService {
 			return loginRequest
 		})
 	}
-
-
-
-
 }
