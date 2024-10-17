@@ -7,7 +7,7 @@ export const sessionsTable = pgTable('sessions', {
 	id: cuid2('id').primaryKey(),
 	userId: text('user_id')
 		.notNull()
-		.references(() => usersTable.id),
+		.references(() => usersTable.id, { onDelete: 'cascade' }),
 	expiresAt: timestamp('expires_at', {
 		withTimezone: true,
 		mode: 'date'
