@@ -1,3 +1,4 @@
+import { relations } from 'drizzle-orm';
 import { cuid2 } from '../../../common/utils/table';
 import { usersTable } from './users.table';
 import { pgTable, text, timestamp } from 'drizzle-orm/pg-core';
@@ -12,3 +13,10 @@ export const sessionsTable = pgTable('sessions', {
 		mode: 'date'
 	}).notNull()
 });
+
+export const sessionsRelations = relations(sessionsTable, ({ one }) => ({
+	user: one(usersTable, {
+	  fields: [sessionsTable.userId],
+	  references: [usersTable.id],
+	}),
+  }));

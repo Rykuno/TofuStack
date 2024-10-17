@@ -8,6 +8,13 @@
       "when": 1722983304054,
       "tag": "0000_clear_paper_doll",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1729196878223,
+      "tag": "0001_gifted_james_howlett",
+      "breakpoints": true
     }
   ]
 }
