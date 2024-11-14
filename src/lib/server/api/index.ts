@@ -1,41 +1,17 @@
-import 'reflect-metadata';
-import { Hono } from 'hono';
-import { hc } from 'hono/client';
-import { container } from 'tsyringe';
-import { IamController } from './controllers/iam.controller';
-import { config } from './common/config';
-import { validateAuthSession, verifyOrigin } from './middlewares/auth.middleware';
-import { AuthCleanupJobs } from './jobs/auth-cleanup.job';
+import { Container } from '@needle-di/core';
+import { ApplicationModule } from './application.module';
+import { ApplicationController } from './application.controller';
 
-/* -------------------------------------------------------------------------- */
-/*                                     App                                    */
-/* -------------------------------------------------------------------------- */
-export const app = new Hono().basePath('/api');
+const applicationController = new Container().get(ApplicationController);
+const applicationModule = new Container().get(ApplicationModule);
 
-/* -------------------------------------------------------------------------- */
-/*                             Global Middlewares                             */
-/* -------------------------------------------------------------------------- */
-app.use(verifyOrigin).use(validateAuthSession);
+/* ------------------------------ startServer ------------------------------ */
+export function startServer() {
+	return applicationModule.start();
+}
 
-/* -------------------------------------------------------------------------- */
-/*                                   Routes                                   */
-/* -------------------------------------------------------------------------- */
-const routes = app
-	.route('/iam', container.resolve(IamController).routes())
+/* ----------------------------------- api ---------------------------------- */
+export const routes = applicationController.registerControllers();
 
-/* -------------------------------------------------------------------------- */
-/*                                  Cron Jobs                                 */
-/* -------------------------------------------------------------------------- */
-container.resolve(AuthCleanupJobs).deleteStaleEmailVerificationRequests();
-container.resolve(AuthCleanupJobs).deleteStaleLoginRequests();
-
-/* -------------------------------------------------------------------------- */
-/*                                   Exports                                  */
-/* -------------------------------------------------------------------------- */
-const rpc = hc<typeof routes>(config.api.origin);
-export type ApiClient = typeof rpc;
+/* ---------------------------------- Types --------------------------------- */
 export type ApiRoutes = typeof routes;
-
-
-
-

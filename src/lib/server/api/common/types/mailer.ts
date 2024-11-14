@@ -1,3 +1,0 @@
-interface INotifier {
-	sendEmail(): any;
-}
