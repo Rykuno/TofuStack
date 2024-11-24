@@ -24,8 +24,6 @@
 	import { authContext } from '$lib/hooks/session.svelte';
 	import { invalidateAll } from '$app/navigation';
 
-	$inspect('AUTHED USER => ', authContext.authedUser);
-
 	let verifyDialogOpen = $state(false);
 	let { data } = $props();
 
