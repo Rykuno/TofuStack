@@ -2,7 +2,7 @@ import { inject, injectable } from '@needle-di/core';
 import { contextStorage } from 'hono/context-storage';
 import { sessionManagement } from './common/middleware/session-managment.middleware';
 import { rateLimit } from './common/middleware/rate-limit.middleware';
-import { RootController } from './common/interfaces/controllers.interface';
+import { RootController } from './common/factories/controllers.factory';
 import { requestId } from 'hono/request-id';
 import { generateId } from './common/utils/crypto';
 import { UsersController } from './users/users.controller';

@@ -64,7 +64,7 @@ export class SessionsService {
 
   async validateSession(sessionId: string): Promise<SessionDto | null> {
     // Check if session exists
-    const existingSession = await this.sessionsRepository.findOneById(sessionId);
+    const existingSession = await this.sessionsRepository.get(sessionId);
 
     // If session does not exist, return null
     if (!existingSession) return null;

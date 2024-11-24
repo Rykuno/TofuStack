@@ -5,7 +5,7 @@ import { LoginRequestsService } from '../iam/login-requests/login-requests.servi
 import { verifyLoginRequestDto } from '../iam/login-requests/dtos/verify-login-request.dto';
 import { SessionsService } from '../iam/sessions/sessions.service';
 import { authState } from '../common/middleware/auth.middleware';
-import { Controller } from '../common/interfaces/controllers.interface';
+import { Controller } from '../common/factories/controllers.factory';
 
 @injectable()
 export class IamController extends Controller {

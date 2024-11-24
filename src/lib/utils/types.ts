@@ -1,4 +1,4 @@
-import type { apiClient } from '$lib/utils/api';
+import type { api } from '$lib/utils/api';
 import type {
 	CreateMutationOptions,
 	CreateQueryOptions,
@@ -13,4 +13,4 @@ export type ApiMutation<T> = CreateMutationOptions<
 	unknown
 >;
 export type ApiQuery<T> = CreateQueryOptions<InferResponseType<T>>;
-export type Api = ReturnType<typeof apiClient>;
+export type Api = ReturnType<typeof api>;

@@ -1,5 +1,5 @@
 import { HTTPException } from 'hono/http-exception';
-import { StatusCodes } from './status-codes';
+import { StatusCodes } from '../../../../utils/status-codes';
 
 export function TooManyRequests(message: string = 'Too many requests') {
 	return new HTTPException(StatusCodes.TOO_MANY_REQUESTS, { message });

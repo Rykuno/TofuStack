@@ -4,8 +4,8 @@ import { MailerService } from '../../mail/mailer.service';
 import { EmailChangeRequestEmail } from '../../mail/templates/email-change-request.template';
 import { EmailChangeNoticeEmail } from '../../mail/templates/email-change-notice.template';
 import { BadRequest } from '../../common/utils/exceptions';
-import { VerificationCodesService } from '../../iam/verification-codes/verification-codes.service';
 import { UsersRepository } from '../users.repository';
+import { VerificationCodesService } from '../../common/services/verification-codes.service';
 
 @injectable()
 export class EmailChangeRequestsService {

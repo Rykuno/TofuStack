@@ -3,9 +3,9 @@ import type { ClientRequestOptions } from 'hono';
 import { UsersModule } from './users';
 import { TanstackQueryModule } from './query-module';
 
-class TanstackQueryApiClient extends TanstackQueryModule {
+class TanstackQueryHandler extends TanstackQueryModule {
 	iam = new IamModule(this.opts);
 	users = new UsersModule(this.opts);
 }
 
-export const apiClient = (opts?: ClientRequestOptions) => new TanstackQueryApiClient(opts);
+export const queryHandler = (opts?: ClientRequestOptions) => new TanstackQueryHandler(opts);

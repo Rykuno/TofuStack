@@ -21,30 +21,33 @@
 	import { createMutation, useQueryClient } from '@tanstack/svelte-query';
 	import { goto } from '$app/navigation';
 	import ChevronLeftIcon from 'lucide-svelte/icons/chevron-left';
-	import { apiClient } from '$lib/tanstack-query';
+	import { queryHandler } from '$lib/tanstack-query';
+	import * as InputOTP from '$lib/components/ui/input-otp/index.js';
+
+	const RESEND_VERIFICATION_CODE_COOLDOWN = 60;
 
 	let queryClient = useQueryClient();
 	let step = $state<'request' | 'verify'>('request');
+	let countdownTimer = $state(RESEND_VERIFICATION_CODE_COOLDOWN);
+	let resendVerificationCodeOnCooldown = $derived(
+		countdownTimer != RESEND_VERIFICATION_CODE_COOLDOWN
+	);
 
+	/* ----------------------------------- Api ---------------------------------- */
 	const requestMutation = createMutation({
-		...queryClient().iam.requestLogin(),
+		...queryHandler().iam.requestLogin(),
 		onSuccess(_data, variables, _context) {
 			step = 'verify';
 			$verifyForm.email = variables.json.email;
+			startResendVerificationCodeTimer();
 		},
 		onError(error) {
 			requestErrors.set({ email: [error.message] });
 		}
 	});
 
-	async function handleResend() {
-		await $requestMutation.mutateAsync({
-			json: { email: $verifyForm.email }
-		});
-	}
-
 	const verifyMutation = createMutation({
-		...apiClient.auth.verifyLogin(),
+		...queryHandler().iam.verifyLogin(),
 		async onSuccess() {
 			await queryClient.invalidateQueries();
 			goto('/');
@@ -54,6 +57,7 @@
 		}
 	});
 
+	/* ------------------------------- Login Form ------------------------------- */
 	const sf_login = superForm(defaults(zod(loginSchema)), {
 		resetForm: false,
 		SPA: true,
@@ -74,7 +78,9 @@
 			$verifyForm.email = event.form.data.email;
 		}
 	});
+	const { form: loginForm, enhance: loginEnhance, errors: requestErrors } = sf_login;
 
+	/* ------------------------------- Verify Form ------------------------------ */
 	const sf_verify = superForm(defaults(zod(verifySchema)), {
 		resetForm: false,
 		SPA: true,
@@ -84,14 +90,31 @@
 			await $verifyMutation.mutateAsync({ json: event.form.data });
 		}
 	});
-
 	const { form: verifyForm, enhance: verifyEnhance, errors: verifyErrors } = sf_verify;
-	const { form: loginForm, enhance: loginEnhance, errors: requestErrors } = sf_login;
 
-	function handleBack() {
+	/* -------------------------------- Functions ------------------------------- */
+	function startResendVerificationCodeTimer() {
+		countdownTimer = RESEND_VERIFICATION_CODE_COOLDOWN - 1;
+		const interval = setInterval(() => {
+			countdownTimer -= 1;
+			if (countdownTimer <= 0) {
+				countdownTimer = RESEND_VERIFICATION_CODE_COOLDOWN;
+				clearInterval(interval);
+			}
+		}, 1000);
+	}
+
+	function resetAuthFlow() {
 		step = 'request';
 		sf_verify.reset();
 		sf_login.reset();
+	}
+
+	async function resendVerificationCode() {
+		startResendVerificationCodeTimer();
+		await $requestMutation.mutateAsync({
+			json: { email: $verifyForm.email }
+		});
 	}
 </script>
 
@@ -129,7 +152,9 @@
 {#snippet verifyCard()}
 	<Card.Root class="mx-auto w-full max-w-sm">
 		<Card.Header>
-			<Button onclick={handleBack} class="h-8 w-8" variant="secondary"><ChevronLeftIcon /></Button>
+			<Button onclick={resetAuthFlow} class="h-8 w-8" variant="secondary"
+				><ChevronLeftIcon /></Button
+			>
 			<Card.Title class="text-2xl">Enter Code</Card.Title>
 			<Card.Description
 				>Please enter the 6 digit code we sent to {$verifyForm.email}</Card.Description
@@ -141,8 +166,15 @@
 				<Form.Field form={sf_verify} name="code">
 					<Form.Control>
 						{#snippet children({ props })}
-							<Form.Label>Code</Form.Label>
-							<Input {...props} bind:value={$verifyForm.code} />
+							<InputOTP.Root maxlength={6} {...props} bind:value={$verifyForm.code}>
+								{#snippet children({ cells })}
+									<InputOTP.Group>
+										{#each cells as cell}
+											<InputOTP.Slot {cell} />
+										{/each}
+									</InputOTP.Group>
+								{/snippet}
+							</InputOTP.Root>
 						{/snippet}
 					</Form.Control>
 					<Form.Description />
@@ -151,7 +183,11 @@
 				<Button type="submit" class="w-full">Verify</Button>
 			</form>
 			<div class="mt-4 text-sm">
-				<Button onclick={handleResend} variant="ghost" size="sm">Resend Code</Button>
+				{#if resendVerificationCodeOnCooldown}
+					<p>Resend code in {countdownTimer}s</p>
+				{:else}
+					<Button onclick={resendVerificationCode} variant="ghost" size="sm">Resend Code</Button>
+				{/if}
 			</div>
 		</Card.Content>
 	</Card.Root>
