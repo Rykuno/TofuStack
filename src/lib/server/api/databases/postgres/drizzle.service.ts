@@ -12,7 +12,8 @@ export class DrizzleService {
 		this.db = drizzle(
 			new Pool({
 				connectionString: this.configService.envs.DATABASE_URL
-			})
+			}),
+			{ schema: drizzleSchema, casing: 'snake_case' }
 		);
 	}
 }
