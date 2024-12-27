@@ -9,7 +9,7 @@
 <QueryClientProvider client={data.queryClient}>
 	<ModeWatcher />
 	<main class="antialiased">
-		{@render children()}
+		{@render children?.()}
 	</main>
 	<SvelteQueryDevtools />
 </QueryClientProvider>

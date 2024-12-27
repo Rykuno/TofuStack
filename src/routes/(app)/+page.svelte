@@ -1,5 +1,7 @@
 <script lang="ts">
-	import { authContext } from '$lib/hooks/session.svelte';
+	import { api } from '$lib/tanstack-query';
+	import { createQuery } from '@tanstack/svelte-query';
+	const authedUserQuery = createQuery(api().users.me());
 </script>
 
-Home
+<p>Authed User: {$authedUserQuery?.data?.email || 'None'}</p>

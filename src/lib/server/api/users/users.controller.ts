@@ -28,8 +28,8 @@ export class UsersController extends Controller {
 				return c.json(user);
 			})
 			.patch('/me', authState('session'), zValidator('form', updateUserDto), async (c) => {
-				await this.usersService.update(c.var.session.userId, c.req.valid('form'));
-				const user = await this.usersRepository.findOneByIdOrThrow(c.var.session.id);
+				const user = await this.usersService.update(c.var.session.userId, c.req.valid('form'));
+				// const user = await this.usersRepository.findOneByIdOrThrow(c.var.session.id);
 				return c.json(user);
 			})
 			.post(

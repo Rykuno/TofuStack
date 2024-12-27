@@ -10,9 +10,11 @@ export const userDto = z.object({
 		.instanceof(File)
 		.optional()
 		.refine((file) => {
+			if (!file) return 'File is required';
 			return !file || file.size <= MAX_UPLOAD_SIZE;
 		}, 'File size must be less than 3MB')
 		.refine((file) => {
+			if (!file) return 'File is required';	
 			return ACCEPTED_FILE_TYPES.includes(file!.type);
 		}, 'File must be a PNG')
 });

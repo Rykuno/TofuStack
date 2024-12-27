@@ -1,2 +1,5 @@
 import { startServer } from '$lib/server/api';
-startServer();
+
+export const init = async () => {
+	await startServer();
+};

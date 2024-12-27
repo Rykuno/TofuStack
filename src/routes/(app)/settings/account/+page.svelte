@@ -14,21 +14,20 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
-	import { queryHandler } from '$lib/tanstack-query';
-	import { createMutation } from '@tanstack/svelte-query';
+	import { api } from '$lib/tanstack-query';
+	import { createMutation, createQuery, useQueryClient } from '@tanstack/svelte-query';
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
 	import * as InputOTP from '$lib/components/ui/input-otp/index.js';
 	import { defaults, superForm } from 'sveltekit-superforms';
 	import { zod } from 'sveltekit-superforms/adapters';
 	import * as Form from '$lib/components/ui/form';
-	import { authContext } from '$lib/hooks/session.svelte';
-	import { invalidateAll } from '$app/navigation';
 
 	let verifyDialogOpen = $state(false);
-	let { data } = $props();
+	const authedUserQuery = $derived(createQuery(api().users.me()));
+	const queryClient = useQueryClient();
 
 	const updateEmailRequestMutation = createMutation({
-		mutationFn: queryHandler().users.updateEmailRequest().mutationFn,
+		mutationFn: api().users.updateEmailRequest().mutationFn,
 		onError: (error) => {
 			updateEmailRequestErrors.set({ email: [error.message] });
 		},
@@ -38,13 +37,12 @@
 	});
 
 	const verifyEmailRequestMutation = createMutation({
-		mutationFn: queryHandler().users.verifyEmailRequest().mutationFn,
+		mutationFn: api().users.verifyEmailRequest().mutationFn,
 		onError: (error) => {
 			verifyEmailRequestErrors.set({ code: [error.message] });
 		},
 		onSuccess: async () => {
-			await invalidateAll();
-			await data.queryClient.invalidateQueries();
+			await queryClient.invalidateQueries();
 			verifyDialogOpen = false;
 		}
 	});
@@ -71,7 +69,7 @@
 	} = sf_verifyEmailRequestForm;
 
 	const sf_updateEmailRequestForm = superForm(
-		defaults(authContext.authedUser, zod(requestFormSchema)),
+		defaults($authedUserQuery.data, zod(requestFormSchema)),
 		{
 			SPA: true,
 			resetForm: false,

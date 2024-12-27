@@ -1,7 +1,7 @@
-import { queryHandler } from '$lib/tanstack-query';
+import { api } from '$lib/tanstack-query';
 
 export const load = async ({ parent, fetch }) => {
 	const { queryClient } = await parent();
-	const authedUser = await queryClient.fetchQuery(queryHandler({ fetch }).users.me());
-	return { authedUser };
+	await queryClient.prefetchQuery({ ...api({ fetch }).users.me() });
+	return {};
 };

@@ -21,7 +21,7 @@
 	import { createMutation, useQueryClient } from '@tanstack/svelte-query';
 	import { goto } from '$app/navigation';
 	import ChevronLeftIcon from 'lucide-svelte/icons/chevron-left';
-	import { queryHandler } from '$lib/tanstack-query';
+	import { api } from '$lib/tanstack-query';
 	import * as InputOTP from '$lib/components/ui/input-otp/index.js';
 
 	const RESEND_VERIFICATION_CODE_COOLDOWN = 60;
@@ -35,7 +35,7 @@
 
 	/* ----------------------------------- Api ---------------------------------- */
 	const requestMutation = createMutation({
-		...queryHandler().iam.requestLogin(),
+		...api().iam.requestLogin(),
 		onSuccess(_data, variables, _context) {
 			step = 'verify';
 			$verifyForm.email = variables.json.email;
@@ -47,7 +47,7 @@
 	});
 
 	const verifyMutation = createMutation({
-		...queryHandler().iam.verifyLogin(),
+		...api().iam.verifyLogin(),
 		async onSuccess() {
 			await queryClient.invalidateQueries();
 			goto('/');

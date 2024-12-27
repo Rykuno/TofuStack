@@ -1,11 +1,11 @@
-import { IamModule } from './iam';
+import { IamModule } from './domains/iam';
 import type { ClientRequestOptions } from 'hono';
-import { UsersModule } from './users';
-import { TanstackQueryModule } from './query-module';
+import { UsersModule } from './domains/users';
+import { TanstackRequestOptions } from './request-options';
 
-class TanstackQueryHandler extends TanstackQueryModule {
+class TanstackQueryModule extends TanstackRequestOptions {
 	iam = new IamModule(this.opts);
 	users = new UsersModule(this.opts);
 }
 
-export const queryHandler = (opts?: ClientRequestOptions) => new TanstackQueryHandler(opts);
+export const api = (opts?: ClientRequestOptions) => new TanstackQueryModule(opts);

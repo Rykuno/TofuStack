@@ -4,7 +4,7 @@ import type { InferResponseType } from 'hono';
 type Me = InferResponseType<Api['users']['me']['$get']>;
 
 class AuthContext {
-	#authedUser = $state<Me>(null);
+	#authedUser = $state<Me | undefined>(null);
 	isAuthed = $derived(!!this.#authedUser);
 
 	get authedUser() {
@@ -12,7 +12,7 @@ class AuthContext {
 	}
 
 	// I like to be explicit when setting the authed user
-	setAuthedUser(user: Me) {
+	setAuthedUser(user: Me | undefined) {
 		this.#authedUser = user;
 	}
 }
